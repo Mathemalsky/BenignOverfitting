@@ -14,8 +14,6 @@ set(CMAKE_CXX_COMPILER g++)
 # set the compiler flags
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -O3 -march=native -pthread -Wall -Wextra -pedantic")
 
-find_package(eigen3 3.3.0)
-
 # lists all sourcefiles to be compiled with the project
 file(GLOB SOURCES "src/*.cpp")
 
