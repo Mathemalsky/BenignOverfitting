@@ -9,6 +9,9 @@
 \usepackage{amssymb}
 \usepackage{amsthm}
 
+% packge for norm command
+\usepackage{physics}
+
 % references
 \usepackage{cleveref}
 
@@ -28,10 +31,40 @@
 \begin{document}
 \maketitle
 \section{Basic definitions} \label{sec:basic_definitions}
+Let \(x \in \mathbb{H}, y \in \mathbb{R}\) with zero mean. Where \(\mathbb{H}\) is a Hilbert space.
 
-\begin{definition} [Linear regression]
-
+\begin{definition} [covariance matrix]
+	\label{def:covarianvce_matrix}
+	\begin{equation}
+		\Sigma = \mathbb{E}\left(\left(x - \mathbb{E}(x)\right)\left(x - \mathbb{E}(x)\right)^T\right) =  \mathbb{E}(xx^T)
+	\end{equation} 
 \end{definition}
+
+\begin{definition} [linear regression]
+	\label{def:linear_regression}
+	The problem of finding a parameter vector \(\theta^\ast \in \mathbb{H}\) with
+	\begin{equation}
+		\theta^\ast = arg \min\limits_\theta \mathbb{E}\left((y - x^T \theta)^2\right)
+	\end{equation}
+	is called \textbf{linear regression}.
+\end{definition}
+
+Let \(\left((x_1, y_1), ..., (x_n, y_n)\right) \in (\mathbb{H} \times \mathbb{R})^n\) a list of \(n\) sampled data points. Now we define the matrix \(X = \big(x_1 \, x_2 \, ... \, x_n\big)\) and the vector \(y = (y_1 \, y_2 \, ... \, y_n)^T\). If there is a \(\theta \in \mathbb{H}\) with \(y - X^T \theta = 0\) that \(\theta\) is a minimum of the linear regression problem sind the expectation of a square is non negative. Usually such a \(\theta\) isn't unique, so we are interested in the minimum norm \(\theta\) with that property.
+
+\begin{definition}[minimum norm estimator]
+	For given samples \(X \in \mathbb{H}^n, y \in \mathbb{R}^n\). The \textbf{minimum norm estimator} \(\theta\) is the solution of the QQP:
+		\begin{align*}
+			\label{eq:QQP}
+			\hat{\theta} = arg \min\limits_{\theta} &\norm{\theta}^2 & \text{subject to: } \norm{X^T \theta - y} = \min\limits_\beta \norm{X^T \beta - y} && \text{(QQP)}\\
+		\end{align*}		
+\end{definition}
+
+The minimum norm estimator can be obtained by solving the normal equation:
+\begin{equation}
+\label{eq:normal_equation}
+	XX^T \theta = X y,
+\end{equation}
+which can be done by numerical stable with QR-decomposition.
 
 
 \end{document}
