@@ -1,0 +1,59 @@
+# the following lines help us ignore extensionless binaries
+# Ignore all
+*
+# Unignore all with extensions
+!*.*
+# Unignore all dirs
+!*/
+# Unignore makefile
+!Doxyfile
+!Makefile
+
+# no bin or build folders
+bin/
+Linux*/
+build*/
+debug/
+release/
+CMakeFiles/
+
+# no documentation
+doc/
+
+# no binaries (objects, libraries/mex, executables)
+*.o
+*.so
+*.a
+*.out
+
+*.obj
+*.lib
+*.dll
+*.mex*
+
+*.exe
+
+# no cachegrind output
+cachegrind.out.*
+
+# no assembler output
+*.s
+
+# no kompressed files
+*.7z
+
+# no build artifacts from IDEs
+*.user
+*.cmake
+*.cdb
+*.install
+
+# no txt files
+*.txt
+
+# exception for some files
+!CMakeLists.txt
+
+# no bash skripts for testing
+*.sh
+
