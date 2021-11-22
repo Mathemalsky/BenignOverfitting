@@ -55,7 +55,7 @@ Let \(\left((x_1, y_1), ..., (x_n, y_n)\right) \in (\mathbb{H} \times \mathbb{R}
 	For given samples \(X \in \mathbb{H}^n, y \in \mathbb{R}^n\). The \textbf{minimum norm estimator} \(\theta\) is the solution of the QQP:
 		\begin{align*}
 			\label{eq:QQP}
-			\hat{\theta} = arg \min\limits_{\theta} &\norm{\theta}^2 & \text{subject to: } \norm{X^T \theta - y} = \min\limits_\beta \norm{X^T \beta - y} && \text{(QQP)}\\
+			\hat{\theta} = arg \min\limits_{\theta} &\norm{\theta}^2 & \text{subject to: } \norm{X^T \theta - y}^2 = \min\limits_\beta \norm{X^T \beta - y}^2 && \text{(QQP)}\\
 		\end{align*}		
 \end{definition}
 
