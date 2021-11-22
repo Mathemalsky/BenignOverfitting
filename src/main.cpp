@@ -1,3 +1,4 @@
+#include <chrono>
 #include <exception>
 #include <iostream>
 #include <random>
@@ -18,13 +19,14 @@ Samples generateSamples(unsigned int n, unsigned int k) {
   Eigen::MatrixXf x(k, n);
   Eigen::VectorXf y(n);
 
-  std::default_random_engine rng;
+  unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+  std::default_random_engine prng(seed);
   std::normal_distribution<float> distribution(0.0f, 1.0f);
   for (unsigned int j = 0; j < n; ++j) {
     for (unsigned int i = 0; i < k; ++i) {
-      x(i, j) = distribution(rng);
+      x(i, j) = distribution(prng);
     }
-    y(j) = distribution(rng);
+    y(j) = distribution(prng);
   }
   return Samples{x, y};
 }
