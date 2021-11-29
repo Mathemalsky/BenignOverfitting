@@ -12,7 +12,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/bin)
 set(CMAKE_CXX_COMPILER g++)
 
 # set the compiler flags
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -O3 -march=native -pthread -Wall -Wextra -pedantic")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -O3 -g -march=native -pthread -Wall -Wextra -pedantic")
 
 # lists all sourcefiles to be compiled with the project
 file(GLOB SOURCES "src/*.cpp")
