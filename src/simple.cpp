@@ -14,7 +14,7 @@ Samples generateSamples(unsigned int n, unsigned int k) {
   unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
   std::default_random_engine prng(seed);
   std::normal_distribution<float> distribution(0.0f, 1.0f);
-  std::normal_distribution<float> distribution2(0.0f, 0.1f);
+  std::normal_distribution<float> distribution2(0.0f, 0.05f);
 
   // generate random theta
   for (unsigned int i = 0; i < k; ++i) {
@@ -47,7 +47,7 @@ void simple(int argc, char* argv[]) {
   Eigen::MatrixXf output(k, 2);
   output.col(0) = samples.Theta;
   output.col(1) = theta;
-  std::cout << output << std::endl;
-  std::cout << "X^T * theta - y =\n" << samples.X.transpose() * theta - samples.Y << "\n";
+  // std::cout << output << std::endl;
+  // std::cout << "X^T * theta - y =\n" << samples.X.transpose() * theta - samples.Y << "\n";
   std::cout << "relative loss: " << (theta - samples.Theta).norm() / (float) k << "\n";
 }
