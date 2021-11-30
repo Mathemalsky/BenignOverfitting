@@ -14,22 +14,28 @@
 #include "io.hpp"
 #include "types.hpp"
 
-using Matrix_X      = Eigen::Matrix<float, MNIST::PIXELS_PER_IMAGE, Eigen::Dynamic>;
+using Matrix_X      = Eigen::Matrix<float, MNIST::PIXELS_PER_IMAGE*(MNIST::DEGREE + 1), Eigen::Dynamic>;
+using Matrix_Xt     = Eigen::Matrix<float, Eigen::Dynamic, MNIST::PIXELS_PER_IMAGE*(MNIST::DEGREE + 1)>;
 using Matrix_Y      = Eigen::Matrix<float, Eigen::Dynamic, MNIST::POSSIBLE_LABELS>;
-using Matrix_theta  = Eigen::Matrix<float, MNIST::PIXELS_PER_IMAGE, MNIST::POSSIBLE_LABELS>;
+using Matrix_theta  = Eigen::Matrix<float, MNIST::PIXELS_PER_IMAGE*(MNIST::DEGREE + 1), MNIST::POSSIBLE_LABELS>;
 using VectorLabelsf = Eigen::Matrix<float, 1, MNIST::POSSIBLE_LABELS>;
 
 namespace MNIST {
 Matrix_X buildMatrix_X(const size_t n, const Data images) {
   assert((images.size == PIXELS_PER_IMAGE * n) && "Number of bytes read from file does not fit.");
 
-  Matrix_X x(PIXELS_PER_IMAGE, n);
-  for (size_t j = 0; j < n; ++j) {
-    for (size_t i = 0; i < PIXELS_PER_IMAGE; ++i) {
-      x(i, j) = (float) images.data[PIXELS_PER_IMAGE * j + i] / MAXBYTE;
+  Matrix_X x(PIXELS_PER_IMAGE * (DEGREE + 1), n);
+  for (size_t i = 0; i < PIXELS_PER_IMAGE; ++i) {
+    x.row(i) = Eigen::VectorXf::Constant(n, 1);
+  }
+  for (size_t d = 1; d <= DEGREE; ++d) {
+    for (size_t j = 0; j < n; ++j) {
+      for (size_t i = 0; i < PIXELS_PER_IMAGE; ++i) {
+        x(PIXELS_PER_IMAGE * d + i, j) =
+          x(PIXELS_PER_IMAGE * (d - 1) + i, j) * (float) images.data[PIXELS_PER_IMAGE * j + i] / MAXBYTE;
+      }
     }
   }
-
   return x;
 }
 
@@ -67,15 +73,12 @@ float predict(const size_t t, const Matrix_theta theta) {
   free(labels.data);
 
   Matrix_Y y_predict = x.transpose() * theta;
-  std::cerr << y - y_predict << "\n";
-  size_t counter = 0;
+  size_t counter     = 0;
   for (size_t i = 0; i < t; ++i) {
     if (y(maxIndex(y_predict.row(i))) == 1.0f) {
       ++counter;
-      std::cerr << i << " ";
     }
   }
-  std::cerr << "\n";
   return (float) counter / t;
 }
 
@@ -93,10 +96,11 @@ void mnist(int argc, char* argv[]) {
   free(labels.data);
 
   // solve the system of equations
-  Eigen::CompleteOrthogonalDecomposition<Eigen::MatrixXf> cQR(x.transpose());
+  Eigen::CompleteOrthogonalDecomposition<Matrix_Xt> cQR(x.transpose());
   Matrix_theta theta = cQR.solve(y);
   float accuracy     = predict(t, theta);
 
+  std::cerr << "cQR has dims: " << cQR.rows() << "x" << cQR.cols() << "\n";
   std::cerr << "Accuracy: " << accuracy << "\n";
 }
 }  // namespace MNIST
