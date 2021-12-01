@@ -100,7 +100,12 @@ void mnist(int argc, char* argv[]) {
   Matrix_theta theta = cQR.solve(y);
   float accuracy     = predict(t, theta);
 
+  Eigen::MatrixXf sigma = x.transpose() * x;
+  Eigen::FullPivLU<Eigen::MatrixXf> lu_decomp(sigma);
+  auto rank = lu_decomp.rank();
+
   std::cerr << "cQR has dims: " << cQR.rows() << "x" << cQR.cols() << "\n";
+  std::cerr << "sigma has rank: " << rank << " and is of size " << sigma.rows() << "x" << sigma.cols() << "\n";
   std::cerr << "Accuracy: " << accuracy << "\n";
 }
 }  // namespace MNIST

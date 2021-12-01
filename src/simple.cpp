@@ -45,9 +45,9 @@ void simple(int argc, char* argv[]) {
 
   // format for output
   Eigen::MatrixXf output(k, 2);
-  output.col(0) = samples.Theta;
-  output.col(1) = theta;
-  // std::cout << output << std::endl;
-  // std::cout << "X^T * theta - y =\n" << samples.X.transpose() * theta - samples.Y << "\n";
+  // output.col(0) = samples.Theta;
+  // output.col(1) = theta;
+  std::cout << output << std::endl;
+  std::cout << "X^T * theta - y =\n" << samples.X.transpose() * theta - samples.Y << "\n";
   std::cout << "relative loss: " << (theta - samples.Theta).norm() / (float) k << "\n";
 }
