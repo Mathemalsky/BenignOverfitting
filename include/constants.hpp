@@ -10,7 +10,7 @@ inline const unsigned int TRAINING_SET_SIZE = 60000;
 inline const unsigned int TEST_SET_SIZE     = 10000;
 inline const unsigned int PIXELS_PER_IMAGE  = 28 * 28;
 inline const unsigned char POSSIBLE_LABELS  = 10;
-inline const unsigned int DEGREE            = 1;
+inline const unsigned int DEGREE            = 3;
 }  // namespace MNIST
 
 inline const unsigned int BYTESIZE = 1;
