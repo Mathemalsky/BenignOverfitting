@@ -1,6 +1,7 @@
 #include "mnist.hpp"
 
 #include <cassert>
+#include <cmath>
 #include <cstddef>
 #include <cstdlib>
 #include <iostream>
@@ -9,6 +10,7 @@
 // headers from Eigen
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Dense>
+#include <eigen3/Eigen/SVD>
 
 #include "constants.hpp"
 #include "io.hpp"
@@ -85,6 +87,23 @@ float predict(const size_t t, const Matrix_theta theta) {
   return (float) counter / t;
 }
 
+static float effectiveRank_r0(const std::vector<float>& eigenValues) {
+  float sum = 0;
+  for (const float& lamda : eigenValues) {
+    sum += lamda;
+  }
+  return sum / eigenValues[0];
+}
+
+static float effectiveRank_R0(const std::vector<float>& eigenValues) {
+  float sum = 0, sumOfSquares = 0;
+  for (const float& lambda : eigenValues) {
+    sum += lambda;
+    sumOfSquares += lambda * lambda;
+  }
+  return sum * sum / sumOfSquares;
+}
+
 void mnist(int argc, char* argv[]) {
   if (argc < 4) {
     throw std::runtime_error("Too less arguments!");
@@ -108,13 +127,20 @@ void mnist(int argc, char* argv[]) {
   float accuracy     = predict(t, theta);
 
   // calculate some additional info for output prompt
-  Eigen::MatrixXf sigma = x.transpose() * x;
-  Eigen::FullPivLU<Eigen::MatrixXf> lu_decomp(sigma);
-  auto rank = lu_decomp.rank();
+  Eigen::MatrixXf sigma = x.transpose() * x;        // compute covariance operator sigma
+  Eigen::BDCSVD<Eigen::MatrixXf> svd(sigma);        // compute just eigenvalues, no eigenvectors
+  const size_t rank = svd.nonzeroSingularValues();  // svd reveals rank of matrix
+  std::vector<float> eigenValues(rank);
+  auto singularValues = svd.singularValues();
+  for (size_t i = 0; i < eigenValues.size(); ++i) {  // the eigenvalues are the squares of the singular values
+    eigenValues[i] = singularValues(i) * singularValues(i);
+  }
 
   // display useful information
-  std::cerr << "cQR has dims: " << cQR.rows() << "x" << cQR.cols() << "\n";
+  std::cerr << "cQR has dims  : " << cQR.rows() << "x" << cQR.cols() << "\n";
   std::cerr << "sigma has rank: " << rank << " and is of size " << sigma.rows() << "x" << sigma.cols() << "\n";
-  std::cerr << "Accuracy: " << accuracy << "\n";
+  std::cerr << "r_0 is        : " << effectiveRank_r0(eigenValues) << "\n";
+  std::cerr << "R_0 is        : " << effectiveRank_R0(eigenValues) << "\n";
+  std::cerr << "Accuracy      : " << accuracy << "\n";
 }
 }  // namespace MNIST
