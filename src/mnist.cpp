@@ -65,11 +65,14 @@ static size_t maxIndex(const VectorLabelsf vec) {
 }
 
 float predict(const size_t t, const Matrix_theta theta) {
+  // read test images
   Data images = readTestImages(t);
-  Data labels = readTestLables(t);
   Matrix_X x  = buildMatrix_X(t, images);
-  Matrix_Y y  = buildMatrix_Y(t, labels);
   free(images.data);
+
+  // read test labels
+  Data labels = readTestLables(t);
+  Matrix_Y y  = buildMatrix_Y(t, labels);
   free(labels.data);
 
   Matrix_Y y_predict = x.transpose() * theta;
@@ -88,11 +91,15 @@ void mnist(int argc, char* argv[]) {
   }
   const size_t n = atoi(argv[2]);
   const size_t t = atoi(argv[3]);
-  Data images    = readTrainImages(n);
-  Data labels    = readTrainLables(n);
-  Matrix_X x     = buildMatrix_X(n, images);
-  Matrix_Y y     = buildMatrix_Y(n, labels);
+
+  // read training images
+  Data images = readTrainImages(n);
+  Matrix_X x  = buildMatrix_X(n, images);
   free(images.data);
+
+  // read training labels
+  Data labels = readTrainLables(n);
+  Matrix_Y y  = buildMatrix_Y(n, labels);
   free(labels.data);
 
   // solve the system of equations
@@ -100,10 +107,12 @@ void mnist(int argc, char* argv[]) {
   Matrix_theta theta = cQR.solve(y);
   float accuracy     = predict(t, theta);
 
+  // calculate some additional info for output prompt
   Eigen::MatrixXf sigma = x.transpose() * x;
   Eigen::FullPivLU<Eigen::MatrixXf> lu_decomp(sigma);
   auto rank = lu_decomp.rank();
 
+  // display useful information
   std::cerr << "cQR has dims: " << cQR.rows() << "x" << cQR.cols() << "\n";
   std::cerr << "sigma has rank: " << rank << " and is of size " << sigma.rows() << "x" << sigma.cols() << "\n";
   std::cerr << "Accuracy: " << accuracy << "\n";
