@@ -88,6 +88,7 @@ float predict(const size_t t, const Matrix_theta theta) {
 }
 
 static float effectiveRank_r0(const std::vector<float>& eigenValues) {
+  assert(eigenValues.size() > 0 && "length of vector shoul be nonzero!");
   float sum = 0;
   for (const float& lamda : eigenValues) {
     sum += lamda;
@@ -96,6 +97,7 @@ static float effectiveRank_r0(const std::vector<float>& eigenValues) {
 }
 
 static float effectiveRank_R0(const std::vector<float>& eigenValues) {
+  assert(eigenValues.size() > 0 && "length of vector shoul be nonzero!");
   float sum = 0, sumOfSquares = 0;
   for (const float& lambda : eigenValues) {
     sum += lambda;
