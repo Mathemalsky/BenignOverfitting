@@ -66,5 +66,80 @@ The minimum norm estimator can be obtained by solving the normal equation:
 \end{equation}
 which can be done by numerical stable with QR-decomposition.
 
+\newpage
+
+\begin{definition} [Excess risk] 
+	\label{def:Excess risk}\ \\
+	
+	$\mathbb{E}_{x,y}$ denotes the conditional expectation , then define: 
+	
+	\begin{equation}
+	R:= \mathbb{E}_{x,y}[(y - x^T\theta)^2 - (y - x^T\theta^*)^2]
+	\end{equation} 
+\end{definition}
+
+
+\begin{definition} [Effective Ranks] 
+	\label{def:Effective Ranks}\ \\
+	
+	For the covariance operator $\sum$, define $\lambda_i = \mu_i(\sum)$ for $i = 1,2,...$ . Whereby \newline $\mu_1(\sum) \geq \mu_1(\sum) \geq ...$ . If $\sum\limits_{i=1}^\infty \lambda_i < \infty$ and $\lambda_{k+1} > 0$ for $k \geq 0,$ define: 
+	
+	\begin{equation}
+	r_k(\sum) = \frac{\sum_{i>k}\lambda_i}{\lambda_k+1} ,\hspace*{2cm}
+    R_k(\sum) = \frac{(\sum_{i>k}\lambda_i)^2}{R_k(\sum_{i>k})\lambda_i^2}
+	\end{equation} 
+\end{definition}
+
+\newpage
+\section{Theorems} \label{sec:Theoreme}
+
+\newtheorem{thm}{Theorem}
+
+\begin{thm}\ \\
+	For any $\delta_x$ there are $b,c,c_1 > 1$, for which the following holds. Consider a linear regression problem from definition~\ref{def:linear_regression}. Define:
+\begin{equation}
+\begin{aligned}
+k^* = \min \{k \leq 0: r_k(\sum) \leq bn\},
+\end{aligned}
+\end{equation}
+
+Where the minimum of the empty set is defined as $\infty$. Suppose $\delta < 1$ with $\log(\frac{1}{\delta}) < n/c$. If $k^* \leq n/c_1$, then $\mathbb{E}R(\hat{\theta}) \leq \delta^2/c.$ Otherwise,
+
+\begin{equation}
+\begin{aligned}
+R(\hat{\theta}) \leq c(\norm{\theta^*}^2\norm{\sum}max{\sqrt{\frac{r_0(\sum)}{n}},\frac{r_0(\sum)}{n},\sqrt{\frac{log(1/\delta)}{n}}}) + clog(\frac{1}{\delta})\sigma_y^2(\frac{k^*}{n} + \frac{n}{R_{k^*(\sum)}}) \\
+\end{aligned}
+\end{equation}
+
+with probability at least $1 - \delta$, and 
+
+\begin{equation}
+\begin{aligned}
+\mathbb{E}R(\hat{\theta}) \geq \frac{\sigma^2}{c} (\frac{k^*}{n} + \frac{n}{R_{k^*(\sum)}}) 
+\end{aligned}
+\end{equation}
+Moreover there are universal constants $a_1.a_2,n_0$ such that $\forall n \geq n_0, \forall \sum, \forall t \geq 0$ there is a $\theta^*$ with $\norm{\theta^*} = t$ such that for $x \sim N(0,\sum)$ and $y|x \sim N(x^T\theta^*,\norm{\theta^*}^2\norm{\sum})$, with probability at least $1/4$,
+
+\begin{equation}
+\begin{aligned}
+R(\hat{\theta})\geq \frac{1}{a_1}\norm{\theta^*}^2\norm{\sum}[\frac{r_0(\sum)}{n\log(1+r_0(\sum))} \geq a_2]
+\end{aligned}
+\end{equation}
+ 
+\end{thm}
+
+
+\begin{thm}\ \\
+The excess risk of the minimum norm estimator satisfies:
+\begin{equation}
+\begin{aligned}
+R(\hat{\theta)}) \leq 2(\theta^*)^TB\theta^* + c\delta^2\log(\frac{1}{\delta})tr(C) \hspace*{1cm}and \\
+\mathbb{E}_\epsilon R(\hat{\theta}) \geq (\theta^*)^TB\theta* + \delta^2tr(C) \hspace*{1cm} where\ \\\\
+\vspace*{0.5cm} B = (I - X^T(XX^T)^{-1}X)\sum(I - X^T(XX^T)^{-1}X),  \\
+C = (XX^T)^{-1}X\sum X^T(XX^T)^{-1}
+\end{aligned}
+\end{equation} 
+
+\end{thm}
 
 \end{document}
