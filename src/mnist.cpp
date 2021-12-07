@@ -47,7 +47,7 @@ Matrix_Y buildMatrix_Y(const size_t n, const Data labels) {
   Matrix_Y y(n, POSSIBLE_LABELS);
   for (size_t i = 0; i < n; ++i) {
     for (unsigned char j = 0; j < POSSIBLE_LABELS; ++j) {
-      y(i, j) = (j == labels.data[i]) ? 1.0f : 0.f;
+      y(i, j) = (j == labels.data[i]) ? 1.0f : 0.0f;
     }
   }
   return y;
