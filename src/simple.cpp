@@ -7,7 +7,7 @@
 Samples generateSamples(unsigned int n, unsigned int k) {
   // allocate memory
   Eigen::MatrixXf x(k, n + k - 1);
-  Eigen::VectorXf y(n);
+  Eigen::VectorXf y(n + k - 1);
   Eigen::VectorXf theta(k);
 
   // set up random number generation
@@ -33,11 +33,18 @@ Samples generateSamples(unsigned int n, unsigned int k) {
     }
   }
   for (unsigned int j = n; j < n + k - 1; ++j) {
+    y(j) = 0;
     for (unsigned int i = 0; i < k; ++i) {
-      x(i, j) = (j - n == i) ? std::sqrt(j - n + 1) : 0.0f;
+      x(i, j) = (j - n + 1 == i) ? std::sqrt(j - n + 1) : 0.0f;
     }
   }
   return Samples{x, y, theta};
+}
+
+std::ostream& operator<<(std::ostream& os, const Samples& samples) {
+  os << samples.X.rows() << samples.X.cols();
+  os << samples.X << samples.Y << samples.Theta;
+  return os << std::endl;
 }
 
 void simple(int argc, char* argv[]) {
@@ -58,4 +65,5 @@ void simple(int argc, char* argv[]) {
   std::cout << output << std::endl;
   std::cout << "X^T * theta - y =\n" << samples.X.transpose() * theta - samples.Y << "\n";
   std::cout << "relative loss: " << (theta - samples.Theta).norm() / (float) k << "\n";
+  std::cerr << samples.X << "\n";
 }

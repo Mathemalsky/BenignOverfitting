@@ -4,7 +4,7 @@ using Plots
 function generateSamples(n, k, mu::Float32)
   # generate theta
   theta = rand(Float32, k)
-  @. theta = (theta -0.5) * 2
+  @. theta = (theta -0.5) * 10
   
   # generate y with noise
   y = Vector{Float32}(undef, n+k -1)
@@ -17,12 +17,13 @@ function generateSamples(n, k, mu::Float32)
   
   # generate X, update y
   supportPoints = rand(Float32, n)
-  @. supportPoints = (supportPoints - 0.5) * 10
+  @. supportPoints = (supportPoints - 0.5)
   supportPoints = sort(supportPoints)
   X = Matrix{Float32}(undef, k, n+k-1)
   
   for j in 1:n
     X[1,j] = 1
+    y[j] = theta[1]
     for i in 2:k
       X[i,j] = X[i-1, j] * supportPoints[j]
       y[j] += X[i,j] * theta[i]
@@ -49,9 +50,9 @@ function plotAll(X::Matrix{Float32}, y::Vector{Float32}, theta::Vector{Float32},
     x[j] = X[2,j]
     val[j] = y[j]
   end
-  plot(x, val ,label="", seriestype=:scatter, xlims=[-5.5, 5.5])
+  plot(x, val ,label="", seriestype=:scatter, xlims=[x[1], x[n]])
   
-  grid = collect(range(-5.5, step=0.01, stop=5.5));
+  grid = collect(range(x[1], step=0.01, stop=x[n]));
   len = length(grid)
   f = zeros(Float32, len)
   for i in 1:k
