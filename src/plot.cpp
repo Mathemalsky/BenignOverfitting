@@ -62,4 +62,16 @@ void plotCurves(const Samples& samples, const Eigen::VectorXf& computedTheta) {
      << "with lines title 'regression theta'," << gp.file1d(supportPoints) << "with points title 'support points'"
      << "\n";
 }
+
+void plotTheta(const Eigen::VectorXf& theta) {
+  const unsigned int k = theta.size();
+  Points points(k);
+  for (unsigned int i = 0; i < k; ++i) {
+    points[i].first  = i;
+    points[i].second = theta(i);
+  }
+
+  Gnuplot gp;
+  gp << "plot" << gp.file1d(points) << "with points title 'coefficients of theta',\n";
+}
 }  // namespace SIMPLE

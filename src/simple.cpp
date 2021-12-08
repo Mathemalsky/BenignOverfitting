@@ -63,12 +63,6 @@ Samples generateSamples(const unsigned int n, const unsigned int k, const float 
   return Samples{x, y, theta};
 }
 
-std::ostream& operator<<(std::ostream& os, const Samples& samples) {
-  os << samples.X.rows() << samples.X.cols();
-  os << samples.X << samples.Y << samples.Theta;
-  return os << std::endl;
-}
-
 void simple(int argc, char* argv[]) {
   if (argc < 3) {
     throw std::runtime_error("Too less arguments!\n");
@@ -81,14 +75,11 @@ void simple(int argc, char* argv[]) {
   Eigen::VectorXf theta = cQR.solve(samples.Y);
 
   // format for output
-  Eigen::MatrixXf output(k, 2);
-  output.col(0) = samples.Theta;
-  output.col(1) = theta;
-  std::cout << output << std::endl;
   /*
   std::cout << "X^T * theta - y =\n" << samples.X.transpose() * theta - samples.Y << "\n";
   std::cerr << samples.X << "\n";
   */
   plotCurves(samples, theta);
+  plotTheta(theta);
 }
 }  // namespace SIMPLE
