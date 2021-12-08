@@ -47,6 +47,7 @@ cachegrind.out.*
 *.cmake
 *.cdb
 *.install
+*.autosave
 
 # no txt files
 *.txt

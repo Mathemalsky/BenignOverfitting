@@ -11,4 +11,10 @@ namespace SIMPLE {
  * \param computedTheta
  */
 void plotCurves(const Samples& samples, const Eigen::VectorXf& computedTheta);
+
+/*!
+ * \brief plotTheta
+ * \param theta
+ */
+void plotTheta(const Eigen::VectorXf& theta);
 }  // namespace SIMPLE
