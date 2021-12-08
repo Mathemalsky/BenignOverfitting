@@ -12,7 +12,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/bin)
 set(CMAKE_CXX_COMPILER g++)
 
 # set the compiler flags
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -O3 -g -march=native -pthread -Wall -Wextra -pedantic")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -O3 -g -march=native -pthread -Wall -Wextra -pedantic -lboost_iostreams -lboost_system -lboost_filesystem")
+
+find_package(Boost COMPONENTS iostreams system filesystem REQUIRED)
 
 # lists all sourcefiles to be compiled with the project
 file(GLOB SOURCES "src/*.cpp")
@@ -26,4 +28,4 @@ add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 # look for included files also in the following directories
 target_include_directories(${PROJECT_NAME} PUBLIC include)
 
-target_link_libraries(${PROJECT_NAME})
+target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})

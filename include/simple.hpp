@@ -1,25 +1,17 @@
 #pragma once
 
-// headers from Eigen
-#include <eigen3/Eigen/Core>
-#include <eigen3/Eigen/Dense>
+#include "types.hpp"
 
-/*!
- * \brief Samples struct stores all sample datas x_i, y_i, theta_j
- */
-struct Samples {
-  Eigen::MatrixXf X;
-  Eigen::VectorXf Y;
-  Eigen::VectorXf Theta;
-};
+namespace SIMPLE {
 
 /*!
  * \brief generateSamples
  * \param n
  * \param k
+ * \param mu
  * \return
  */
-Samples generateSamples(unsigned int n, unsigned int k);
+Samples generateSamples(const unsigned int n, const unsigned int k, const float mu);
 
 /*!
  * \brief simple
@@ -27,3 +19,4 @@ Samples generateSamples(unsigned int n, unsigned int k);
  * \param argv
  */
 void simple(int argc, char* argv[]);
+}  // namespace SIMPLE

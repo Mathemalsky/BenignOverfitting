@@ -6,7 +6,7 @@ int main(int argc, char* argv[]) {
     MNIST::mnist(argc, argv);
   }
   else {
-    simple(argc, argv);
+    SIMPLE::simple(argc, argv);
   }
   return 0;
 }

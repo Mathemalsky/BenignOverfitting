@@ -13,5 +13,11 @@ inline const unsigned char POSSIBLE_LABELS  = 10;
 inline const unsigned int DEGREE            = 3;
 }  // namespace MNIST
 
+namespace SIMPLE {
+inline const unsigned int GRID_POINTS = 400;
+inline const float X_MIN              = -1.0f;
+inline const float X_MAX              = 1.0f;
+}  // namespace SIMPLE
+
 inline const unsigned int BYTESIZE = 1;
 inline const unsigned int MAXBYTE  = 255;

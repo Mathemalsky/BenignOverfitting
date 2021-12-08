@@ -1,25 +1,26 @@
+using LinearAlgebra
 using Plots
 
 # generate the data for the example
-function generateSamples(n, k, mu::Float32)
+function generateSamples(n, k, mu::Float64)
   # generate theta
-  theta = rand(Float32, k)
+  theta = rand(Float64, k)
   @. theta = (theta -0.5) * 10
   
   # generate y with noise
-  y = Vector{Float32}(undef, n+k -1)
+  y = Vector{Float64}(undef, n+k -1)
   for j in 1:n
-    y[j] = 0.5 * (rand(Float32) -0.5)
+    y[j] = 1 * (rand(Float64) -0.5)
   end
   for j in n+1:n+k-1
     y[j] = 0
   end
   
   # generate X, update y
-  supportPoints = rand(Float32, n)
+  supportPoints = rand(Float64, n)
   @. supportPoints = (supportPoints - 0.5)
   supportPoints = sort(supportPoints)
-  X = Matrix{Float32}(undef, k, n+k-1)
+  X = Matrix{Float64}(undef, k, n+k-1)
   
   for j in 1:n
     X[1,j] = 1
@@ -43,30 +44,38 @@ function generateSamples(n, k, mu::Float32)
   return X, y, theta
 end
 
-function plotAll(X::Matrix{Float32}, y::Vector{Float32}, theta::Vector{Float32}, n, k)
-  x = Vector{Float32}(undef, n)
-  val = Vector{Float32}(undef, n)
+function evalPolynomial(grid, coeff)
+  k = length(coeff)
+  len = length(grid)
+  f = zeros(Float64, len)
+  for i in 1:k
+    for j in 1:len
+      f[j] *= grid[j]
+      f[j] += coeff[k + 1 - i]
+    end
+  end
+  return f
+end
+
+function plotAll(X::Matrix{Float64}, y::Vector{Float64}, theta::Vector{Float64}, n, k)
+  x = Vector{Float64}(undef, n)
+  val = Vector{Float64}(undef, n)
   for j in 1:n
     x[j] = X[2,j]
     val[j] = y[j]
   end
-  plot(x, val ,label="", seriestype=:scatter, xlims=[x[1], x[n]])
+  plot(x, val ,label="", seriestype=:scatter) #xlims=[x[1], x[n]]
   
-  grid = collect(range(x[1], step=0.01, stop=x[n]));
-  len = length(grid)
-  f = zeros(Float32, len)
-  for i in 1:k
-    for j in 1:len
-      f[j] *= grid[j]
-      f[j] += theta[k + 1 - i]
-    end
-  end
+  grid = collect(range(x[1], step=0.01, stop=x[n]))
+  f = evalPolynomial(grid, theta)
+  plot!(grid, f, label="theta")
   
-  plot!(grid, f, label="")
+  theta2 = X' \ y # solve in least squares sense
+  f2 = evalPolynomial(grid, theta2)
+  plot!(grid, f2, label="regression theta")
 end
 
-
-function wrap(n, k, mu::Float32)
+function wrap(n, k, mu::Float64)
   X, y, theta = generateSamples(n, k, mu)
   plotAll(X, y, theta, n, k)
 end
