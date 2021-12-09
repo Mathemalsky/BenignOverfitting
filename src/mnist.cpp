@@ -106,6 +106,33 @@ static float effectiveRank_R0(const std::vector<float>& eigenValues) {
   return sum * sum / sumOfSquares;
 }
 
+std::array<unsigned int, POSSIBLE_LABELS> countLabels(const Data& data) {
+  std::array<unsigned int, POSSIBLE_LABELS> counter;
+  for (unsigned int i = 0; i < POSSIBLE_LABELS; ++i) {
+    counter[i] = 0;
+  }
+  for (unsigned int i = 0; i < data.size; ++i) {
+    ++counter[data.data[i]];
+  }
+  return counter;
+}
+
+void displayLabelCounter(const std::array<unsigned int, POSSIBLE_LABELS>& labelCounter) {
+  std::cout << "Labels appeared in the training set in the following distribution:\n\n";
+  for (unsigned int i = 0; i < POSSIBLE_LABELS; ++i) {
+    printf("     %u |", i);
+  }
+  printf("\n");
+  for (unsigned int i = 0; i < POSSIBLE_LABELS; ++i) {
+    printf("-------|");
+  }
+  printf("\n");
+  for (unsigned int i = 0; i < POSSIBLE_LABELS; ++i) {
+    printf(" %5s |", (std::to_string(labelCounter[i])).c_str());
+  }
+  printf("\n\n");
+}
+
 void mnist(int argc, char* argv[]) {
   if (argc < 4) {
     throw std::runtime_error("Too less arguments!");
@@ -119,8 +146,9 @@ void mnist(int argc, char* argv[]) {
   free(images.data);
 
   // read training labels
-  Data labels = readTrainLables(n);
-  Matrix_Y y  = buildMatrix_Y(n, labels);
+  Data labels                                            = readTrainLables(n);
+  Matrix_Y y                                             = buildMatrix_Y(n, labels);
+  std::array<unsigned int, POSSIBLE_LABELS> labelCounter = countLabels(labels);
   free(labels.data);
 
   // solve the system of equations
@@ -139,6 +167,7 @@ void mnist(int argc, char* argv[]) {
   }
 
   // display useful information
+  displayLabelCounter(labelCounter);
   std::cerr << "cQR has dims  : " << cQR.rows() << "x" << cQR.cols() << "\n";
   std::cerr << "sigma has rank: " << rank << " and is of size " << sigma.rows() << "x" << sigma.cols() << "\n";
   std::cerr << "r_0 is        : " << effectiveRank_r0(eigenValues) << "\n";
