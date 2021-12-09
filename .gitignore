@@ -57,6 +57,9 @@ cachegrind.out.*
 # no bash skripts for testing
 *.sh
 
-# no pdf files
+# no pdf files or other files from latex
 *.pdf
+*.aux
+*.log
+*.synctex.gz
 
