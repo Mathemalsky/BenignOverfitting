@@ -19,11 +19,52 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 
+% norm
+\usepackage{physics}
+
 \title{Benign Overfitting}
-\date{16. Dezember 2021}
+\date{16. December 2021}
 \author{Linus Boehm, Jurek Rostalsky}
 
 
 \begin{document}
 \maketitle
+
+\begin{frame}{MNIST}
+\begin{block} {MNIST}
+\begin{itemize}
+	\item very commonly used benchmark problem in machine learning
+	\item goal: recognize hand written digit from an \(28 \cdot 28\) pixel image
+	\item contains 60000 training images/ labels, 10000 test images/ labels
+	\item standard ML approches perform very well
+\end{itemize}
+% put some images on that page
+
+\end{block}
+\end{frame}
+
+\begin{frame} {least norm solution}
+\begin{block}{normal euation}
+problem: \(\min \frac{1}{2} x^Tx \text{ s.t. } Ax = b\) A with full row rank\\
+\begin{align*}
+	L(x,\lambda) &= \frac{1}{2} x^Tx - \lambda^T (Ax -b)\\
+	\nabla_x L(x,\lambda) &= x - A^T \lambda \stackrel{!}{=} 0\\
+	x & = A^T \lambda\\
+	AA^T \lambda &= b \Leftrightarrow \lambda = (AA^T)^{-1} b\\
+	x &= A^T(AA^T)^{-1} b \Leftrightarrow \\
+\end{align*}
+\end{block}
+\end{frame}
+
+\begin{frame}{least norm solution}
+\begin{block}{QR decomposition}
+\begin{align*}
+	A^TAx &= A^T b & \text{normal equation}\\
+	R^TQ^TQR^Tx &= R^TQ^Tb\\
+	R^TRx & = R^TQ^Tb\\
+	Rx &= Q^T b\\
+\end{align*}
+
+\end{block}
+\end{frame}
 \end{document}
