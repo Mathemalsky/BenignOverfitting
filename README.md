@@ -31,3 +31,15 @@ The project can be compiled with the following commands:
 - cd build/
 - cmake ..
 - make
+This last step may take a while because eigen is a header only library which needs to be compiled again every time.
+
+## running the program
+After the program is compiled. There will be a `bin/` directory with the binary file in it.
+The mnist example needs the mnist dataset, which can be downloaded [here](https://deepai.org/dataset/mnist).
+The extractet foler `mnist/` has be in the `bin/` directory and the files whithin it must be unpacked too.
+
+The simple polynomial regression can be invoked with:
+`./BeningOverfitting <n> <k> <mu>` where `<n>` is the number of data points, `<k>` is the number of degrees of freedom and `<mu>` is weight for the regularization penalty.
+
+The mnist exaple can be invoked with:
+`./BeningOverfitting mnist <n> <t>` where `<n>` is the number of images used for training and `<t>` is the number of images used for estimating the prediction accuracy.
