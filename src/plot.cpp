@@ -38,7 +38,6 @@ Points extractPoints(const Samples& samples) {
 }
 
 void plotCurves(const Samples& samples, const Eigen::VectorXf& computedTheta) {
-  Gnuplot gp;
   const unsigned int n = samples.X.cols() - samples.X.rows() + 1;
   const float x_min    = samples.X(1, 0);
   const float x_max    = samples.X(1, n - 1);
@@ -59,10 +58,12 @@ void plotCurves(const Samples& samples, const Eigen::VectorXf& computedTheta) {
     xy_pts_B.push_back(std::make_pair(cos(theta), sin(theta)));
   }
 
-  // gp << "set xrange [" << x_min << ":" << x_max << "]\n";
+  Gnuplot gp;
+  gp << "set terminal png size 700,400\n";
+  gp << "set output 'theta_plot.png'\n";
   gp << "plot" << gp.file1d(pointsOrigTheta) << "with lines title 'theta'," << gp.file1d(pointsComputedTheta)
-     << "with lines title 'regression theta'," << gp.file1d(supportPoints) << "with points title 'support points'"
-     << "\n";
+     << "with lines title 'regression theta'," << gp.file1d(supportPoints) << "with points title 'support points'\n";
+  gp << "set output\n";
 }
 
 void plotTheta(const Eigen::VectorXf& theta) {
@@ -74,7 +75,10 @@ void plotTheta(const Eigen::VectorXf& theta) {
   }
 
   Gnuplot gp;
+  gp << "set terminal png size 700,400\n";
+  gp << "set output 'theta_coefficients.png'\n";
   gp << "plot" << gp.file1d(points) << "with points title 'coefficients of theta',\n";
+  gp << "set output\n";
 }
 }  // namespace SIMPLE
 
@@ -82,7 +86,6 @@ namespace KERNELESTIMATE {
 static float gauss(const float x, const float sigma) {
   static const float inv_sqrt_2pi = 0.3989422804014327f;
   const float xDivSigma           = x / sigma;
-  // std::cerr << inv_sqrt_2pi * std::exp(-0.5 * xDivSigma * xDivSigma) / sigma;
   return inv_sqrt_2pi * std::exp(-0.5 * xDivSigma * xDivSigma) / sigma;
 }
 
@@ -117,6 +120,10 @@ Curve kernelEstimate(const std::vector<float>& data, const float h) {
 void plotDensity(const std::vector<float>& data, const float h) {
   Curve curve = kernelEstimate(data, h);
   Gnuplot gp;
+  gp << "set terminal png size 1400,800\n";
+  gp << "set output 'density.png'\n";
+  gp << "set yrange [0.0 : 5.0]\n";
   gp << "plot" << gp.file1d(curve) << "with lines title 'density of accuracy',\n";
+  gp << "set output\n";
 }
 }  // namespace KERNELESTIMATE
