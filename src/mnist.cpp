@@ -166,12 +166,17 @@ void mnist(int argc, char* argv[]) {
     eigenValues[i] = singularValues(i) * singularValues(i);
   }
 
-  // display useful information
-  displayLabelCounter(labelCounter);
-  std::cerr << "cQR has dims  : " << cQR.rows() << "x" << cQR.cols() << "\n";
-  std::cerr << "sigma has rank: " << rank << " and is of size " << sigma.rows() << "x" << sigma.cols() << "\n";
-  std::cerr << "r_0 is        : " << effectiveRank_r0(eigenValues) << "\n";
-  std::cerr << "R_0 is        : " << effectiveRank_R0(eigenValues) << "\n";
-  std::cerr << "Accuracy      : " << accuracy << "\n";
+  if (argc == 4) {
+    // display useful information
+    displayLabelCounter(labelCounter);
+    std::cerr << "cQR has dims  : " << cQR.rows() << "x" << cQR.cols() << "\n";
+    std::cerr << "sigma has rank: " << rank << " and is of size " << sigma.rows() << "x" << sigma.cols() << "\n";
+    std::cerr << "r_0 is        : " << effectiveRank_r0(eigenValues) << "\n";
+    std::cerr << "R_0 is        : " << effectiveRank_R0(eigenValues) << "\n";
+    std::cerr << "Accuracy      : " << accuracy << "\n";
+  }
+  else if (std::strcmp(argv[4], "-d") == 0) {
+    writeAccuracy(accuracy);
+  }
 }
 }  // namespace MNIST

@@ -14,12 +14,9 @@
 
 #include "constants.hpp"
 #include "plot.hpp"
+#include "types.hpp"
 
 namespace SIMPLE {
-
-using Curve  = std::array<std::pair<float, float>, GRID_POINTS>;
-using Points = std::vector<std::pair<float, float>>;
-
 Samples generateSamples(const unsigned int n, const unsigned int k, const float mu) {
   // allocate memory
   Eigen::MatrixXf x(k, n + k - 1);

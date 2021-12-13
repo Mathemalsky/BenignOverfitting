@@ -18,3 +18,12 @@ void plotCurves(const Samples& samples, const Eigen::VectorXf& computedTheta);
  */
 void plotTheta(const Eigen::VectorXf& theta);
 }  // namespace SIMPLE
+
+namespace KERNELESTIMATE {
+/*!
+ * \brief plotDensity
+ * \param data
+ * \param h
+ */
+void plotDensity(const std::vector<float>& data, const float h);
+}  // namespace KERNELESTIMATE

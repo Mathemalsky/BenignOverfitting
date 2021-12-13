@@ -10,6 +10,11 @@
 
 using Byte = unsigned char;
 
+namespace GENERAL {
+using Curve = std::array<std::pair<float, float>, GRID_POINTS>;
+using Grid  = std::array<float, GRID_POINTS>;
+}  // namespace GENERAL
+
 namespace MNIST {
 struct Data {
   size_t size;
@@ -30,7 +35,6 @@ struct SampleSubset {
 
 namespace SIMPLE {
 
-using Curve  = std::array<std::pair<float, float>, GRID_POINTS>;
 using Points = std::vector<std::pair<float, float>>;
 
 /*!
