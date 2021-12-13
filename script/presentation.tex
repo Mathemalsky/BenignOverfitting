@@ -30,6 +30,12 @@
 \begin{document}
 \maketitle
 
+\begin{frame}{Content}
+\tableofcontents
+\end{frame}
+
+\section{MNIST}
+
 \begin{frame}{MNIST}
 \begin{block} {MNIST}
 \begin{itemize}
@@ -44,20 +50,26 @@
 \end{block}
 \end{frame}
 
+\section{Linear algebra background}
+
 \begin{frame} {least norm solution}
-\begin{block}{normal euation}
-problem: \(\min \frac{1}{2} x^Tx \text{ s.t. } Ax = b\) A with full row rank\\
+\begin{block}{normal equation}
+problem: \(\min \frac{1}{2} x^Tx \text{ s.t. } Ax = b\) with \(A\) ¸full row rank
+\pause
 \begin{align*}
 	L(x,\lambda) &= \frac{1}{2} x^Tx - \lambda^T (Ax -b)\\
 	\nabla_x L(x,\lambda) &= x - A^T \lambda \stackrel{!}{=} 0\\
 	x & = A^T \lambda\\
 	AA^T \lambda &= b \Leftrightarrow \lambda = (AA^T)^{-1} b\\
-	x &= A^T(AA^T)^{-1} b \Leftrightarrow \\
+	x &= A^T(AA^T)^{-1} b & A^T =: QR\\
+	x &= QR(R^TQ^TQR)^{-1}b\\
+	x &= QRR^{-1} R^{-T}b\\
+	x &= QR^{-T}b
 \end{align*}
 \end{block}
 \end{frame}
 
-\begin{frame}{least norm solution}
+\begin{frame}{least squares solution}
 \begin{block}{QR decomposition}
 \begin{align*}
 	A^TAx &= A^T b & \text{normal equation}\\
@@ -68,9 +80,70 @@ problem: \(\min \frac{1}{2} x^Tx \text{ s.t. } Ax = b\) A with full row rank\\
 \end{block}
 \end{frame}
 
-\begin{frame}
-\begin{block}{least norm estimator}
-compute solution \(\theta\) of linear system of equations by
+\section{Benign Overfitting}
+
+\begin{frame}{polynomial fitting}
+\begin{block}{unregulated  estimation of \(\theta\)}
+given samples \((x_1, y_1), ..., (x_n, y_n)\)
+
+		\begin{equation*}
+			X^T = \begin{pmatrix}
+			1 & x_1 & ... & x_1^{k-1}\\
+			\vdots &&& \vdots\\
+			1 & x_n & ... & x_n^{k-1}
+			\end{pmatrix} \text{Vandermondematrix}
+		\end{equation*}
+		
+compute \(\theta\) as least square solution of
+
+\begin{equation}
+X^T \theta = y
+\end{equation}
+\end{block}
+\end{frame}
+
+\begin{frame}{polynomial fitting}
+\begin{block}{regularized estimation of \(\theta\)}
+	problem: \(\min \frac{1}{2} \norm{X^T  \theta -y}^2 + \mu x^TWx\)
+	\vspace{0.5cm}
+	\pause
+	
+	\(\mu\) - weight of regularization term
+	
+	\(W\) - diagonal matrix, \(w_{ij} := \delta_{ij} i \quad i,j \in \{0,...,k-1\}\)
+\end{block}
+\end{frame}
+
+\begin{frame}{polynomial fitting examples}
+\begin{center}
+\includegraphics[scale=0.6]{source/theta_plot_1.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{polynomial fitting examples}
+\begin{center}
+\includegraphics[scale=0.6]{source/theta_coefficients_1.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{polynomial fitting examples}
+\begin{center}
+\includegraphics[scale=0.6]{source/theta_plot_2.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{polynomial fitting examples}
+\begin{center}
+\includegraphics[scale=0.6]{source/theta_coefficients_1.png}
+\end{center}
+\end{frame}
+
+
+\section{Sources}
+\begin{frame}{Sources}
+\begin{block}{Text}
+\tiny
+\url{http://yann.lecun.com/exdb/mnist/} 13.09.2021 21:45
 \end{block}
 \end{frame}
 
