@@ -26,7 +26,7 @@ inline const unsigned int GRID_POINTS = 400;
 namespace KERNELESTIMATE {
 inline const float START        = 0.0f;
 inline const float END          = 1.0f;
-inline const float REL_BANDWITH = 6.0f;
+inline const float REL_BANDWITH = 9.0f;
 }  // namespace KERNELESTIMATE
 
 inline const unsigned int BYTESIZE = 1;

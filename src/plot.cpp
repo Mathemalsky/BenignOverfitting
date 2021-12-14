@@ -61,6 +61,8 @@ void plotCurves(const Samples& samples, const Eigen::VectorXf& computedTheta) {
   Gnuplot gp;
   gp << "set terminal png size 700,400\n";
   gp << "set output 'theta_plot.png'\n";
+  gp << "set xlabel 'x'\n";
+  gp << "set ylabel 'y' rotate by 0\n";
   gp << "plot" << gp.file1d(pointsOrigTheta) << "with lines title 'theta'," << gp.file1d(pointsComputedTheta)
      << "with lines title 'regression theta'," << gp.file1d(supportPoints) << "with points title 'support points'\n";
   gp << "set output\n";
@@ -77,6 +79,8 @@ void plotTheta(const Eigen::VectorXf& theta) {
   Gnuplot gp;
   gp << "set terminal png size 700,400\n";
   gp << "set output 'theta_coefficients.png'\n";
+  gp << "set xlabel 'degree'\n";
+  gp << "set ylabel 'coefficient'\n";
   gp << "plot" << gp.file1d(points) << "with points title 'coefficients of theta',\n";
   gp << "set output\n";
 }
@@ -123,6 +127,7 @@ void plotDensity(const std::vector<float>& data, const float h) {
   gp << "set terminal png size 1400,800\n";
   gp << "set output 'density.png'\n";
   gp << "set yrange [0.0 : 5.0]\n";
+  gp << "set xlabel 'accuracy'\n";
   gp << "plot" << gp.file1d(curve) << "with lines title 'density of accuracy',\n";
   gp << "set output\n";
 }
