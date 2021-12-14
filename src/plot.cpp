@@ -5,6 +5,7 @@
 #include "gnuplot-iostream.h"
 
 #include "constants.hpp"
+#include "statistics.hpp"
 
 using namespace GENERAL;
 
@@ -125,5 +126,7 @@ void plotDensity(const std::vector<double>& data, const double h) {
   gp << "set xlabel 'accuracy'\n";
   gp << "plot" << gp.file1d(curve) << "with lines title 'density of accuracy',\n";
   gp << "set output\n";
+
+  printf("Accuracy\nmean:     %1.4f\nvariance: %1.4f\n", mean(data), variance(data));
 }
 }  // namespace KERNELESTIMATE
