@@ -40,8 +40,8 @@ using Points = std::vector<std::pair<double, double>>;
  * \brief Samples struct stores all sample datas x_i, y_i, theta_j
  */
 struct Samples {
-  Eigen::MatrixXf X;
-  Eigen::VectorXf Y;
-  Eigen::VectorXf Theta;
+  Eigen::MatrixXd X;
+  Eigen::VectorXd Y;
+  Eigen::VectorXd Theta;
 };
 }  // namespace SIMPLE

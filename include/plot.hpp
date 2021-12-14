@@ -10,13 +10,13 @@ namespace SIMPLE {
  * \param samples
  * \param computedTheta
  */
-void plotCurves(const Samples& samples, const Eigen::VectorXf& computedTheta);
+void plotCurves(const Samples& samples, const Eigen::VectorXd& computedTheta);
 
 /*!
  * \brief plotTheta
  * \param theta
  */
-void plotTheta(const Eigen::VectorXf& theta);
+void plotTheta(const Eigen::VectorXd& theta);
 }  // namespace SIMPLE
 
 namespace KERNELESTIMATE {

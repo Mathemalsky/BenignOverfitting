@@ -17,7 +17,7 @@ static void initCurve(Curve& curve, const double x_min, const double x_max) {
 }
 
 namespace SIMPLE {
-void evalPolynomial(Curve& curve, const Eigen::VectorXf& coeff) {
+void evalPolynomial(Curve& curve, const Eigen::VectorXd& coeff) {
   const unsigned int k = coeff.size();
   for (unsigned int j = 0; j < k; ++j) {
     for (unsigned int i = 0; i < GRID_POINTS; ++i) {
@@ -37,7 +37,7 @@ Points extractPoints(const Samples& samples) {
   return points;
 }
 
-void plotCurves(const Samples& samples, const Eigen::VectorXf& computedTheta) {
+void plotCurves(const Samples& samples, const Eigen::VectorXd& computedTheta) {
   const unsigned int n = samples.X.cols() - samples.X.rows() + 1;
   const double x_min   = samples.X(1, 0);
   const double x_max   = samples.X(1, n - 1);
@@ -68,7 +68,7 @@ void plotCurves(const Samples& samples, const Eigen::VectorXf& computedTheta) {
   gp << "set output\n";
 }
 
-void plotTheta(const Eigen::VectorXf& theta) {
+void plotTheta(const Eigen::VectorXd& theta) {
   const unsigned int k = theta.size();
   Points points(k);
   for (unsigned int i = 0; i < k; ++i) {

@@ -19,9 +19,9 @@
 namespace SIMPLE {
 Samples generateSamples(const unsigned int n, const unsigned int k, const double mu) {
   // allocate memory
-  Eigen::MatrixXf x(k, n + k - 1);
-  Eigen::VectorXf y(n + k - 1);
-  Eigen::VectorXf theta(k);
+  Eigen::MatrixXd x(k, n + k - 1);
+  Eigen::VectorXd y(n + k - 1);
+  Eigen::VectorXd theta(k);
   std::vector<double> supportPoints(n);
 
   // set up random number generation
@@ -68,8 +68,8 @@ void simple(int argc, char* argv[]) {
   Samples samples      = generateSamples(atoi(argv[1]), k, atof(argv[3]));  // get the random samples
 
   // solve the system of equations
-  Eigen::CompleteOrthogonalDecomposition<Eigen::MatrixXf> cQR(samples.X.transpose());
-  Eigen::VectorXf theta = cQR.solve(samples.Y);
+  Eigen::CompleteOrthogonalDecomposition<Eigen::MatrixXd> cQR(samples.X.transpose());
+  Eigen::VectorXd theta = cQR.solve(samples.Y);
 
   // format for output
   /*
