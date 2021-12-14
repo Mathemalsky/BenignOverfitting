@@ -15,16 +15,25 @@ using Curve = std::array<std::pair<double, double>, GRID_POINTS>;
 }  // namespace GENERAL
 
 namespace MNIST {
+/*!
+ * \brief Data is a pointer to a byte array an the number of bytes stored there
+ */
 struct Data {
   size_t size;
   Byte* data;
 };
 
+/*!
+ * \brief Data_f is a pointer to a float array an the number of floats stored there
+ */
 struct Data_f {
   size_t size;
   double* data;
 };
 
+/*!
+ * \brief SampleSubset store a subset of {0,..., n-1} in the fist k entries of indexes
+ */
 struct SampleSubset {
   size_t n, k;
   std::vector<size_t> indexes;
@@ -33,7 +42,6 @@ struct SampleSubset {
 }  // namespace MNIST
 
 namespace SIMPLE {
-
 using Points = std::vector<std::pair<double, double>>;
 
 /*!

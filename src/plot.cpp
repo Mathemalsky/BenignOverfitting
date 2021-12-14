@@ -109,11 +109,6 @@ Curve kernelEstimate(const std::vector<double>& data, const double h) {
     for (unsigned int j = std::max(0, startindex); j <= endindex && j < GRID_POINTS; ++j) {
       curve[j].second += gauss(curve[j].first - data[i], h / REL_BANDWITH);
     }
-    /*
-    for (unsigned int j = GRID_POINTS; j <= endindex; ++j) {
-      curve[GRID_POINTS - 1].second += gauss(START + j * stepsize - data[i], h / REL_BANDWITH);
-    }
-    */
   }
   for (unsigned int j = 0; j < GRID_POINTS; ++j) {
     curve[j].second /= (double) n;

@@ -71,11 +71,6 @@ void simple(int argc, char* argv[]) {
   Eigen::CompleteOrthogonalDecomposition<Eigen::MatrixXd> cQR(samples.X.transpose());
   Eigen::VectorXd theta = cQR.solve(samples.Y);
 
-  // format for output
-  /*
-  std::cout << "X^T * theta - y =\n" << samples.X.transpose() * theta - samples.Y << "\n";
-  std::cerr << samples.X << "\n";
-  */
   plotCurves(samples, theta);
   plotTheta(theta);
 }
