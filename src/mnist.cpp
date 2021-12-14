@@ -128,11 +128,12 @@ void displayLabelCounter(const std::array<unsigned int, POSSIBLE_LABELS>& labelC
 }
 
 void mnist(int argc, char* argv[]) {
-  if (argc < 4) {
+  if (argc < 5) {
     throw std::runtime_error("Too less arguments!");
   }
-  const size_t n = atoi(argv[2]);
-  const size_t t = atoi(argv[3]);
+  const size_t n  = atoi(argv[2]);
+  const size_t t  = atoi(argv[3]);
+  const double mu = atof(argv[4]);
 
   // read training images
   Data images       = readTrainImages(n);
@@ -145,10 +146,24 @@ void mnist(int argc, char* argv[]) {
   std::array<unsigned int, POSSIBLE_LABELS> labelCounter = countLabels(labels);
   free(labels.data);
 
-  // solve the system of equations
-  Eigen::CompleteOrthogonalDecomposition<Eigen::MatrixXd> cQR(x.transpose());
-  Eigen::MatrixXd theta = cQR.solve(y);
-  double accuracy       = predict(t, theta);
+  double accuracy;
+  if (mu <= EPS) {
+    // solve the system of equations
+    Eigen::CompleteOrthogonalDecomposition<Eigen::MatrixXd> cQR(x.transpose());
+    Eigen::MatrixXd theta = cQR.solve(y);
+    accuracy              = predict(t, theta);
+  }
+  else {
+    Eigen::MatrixXd A = x * x.transpose();
+    for (unsigned int d = 0; d <= DEGREE; ++d) {
+      for (unsigned int i = 0; i < PIXELS_PER_IMAGE; ++i) {
+        const unsigned int index = d * PIXELS_PER_IMAGE + i;
+        A(index, index) += 2 * mu * d;
+      }
+    }
+    Eigen::MatrixXd theta = A.ldlt().solve(x * y);
+    accuracy              = predict(t, theta);
+  }
 
   // calculate some additional info for output prompt
   Eigen::MatrixXd sigma = x.transpose() * x;        // compute covariance operator sigma
@@ -160,16 +175,15 @@ void mnist(int argc, char* argv[]) {
     eigenValues[i] = singularValues(i) * singularValues(i);
   }
 
-  if (argc == 4) {
+  if (argc == 5) {
     // display useful information
     displayLabelCounter(labelCounter);
-    std::cerr << "cQR has dims  : " << cQR.rows() << "x" << cQR.cols() << "\n";
     std::cerr << "sigma has rank: " << rank << " and is of size " << sigma.rows() << "x" << sigma.cols() << "\n";
     std::cerr << "r_0 is        : " << effectiveRank_r0(eigenValues) << "\n";
     std::cerr << "R_0 is        : " << effectiveRank_R0(eigenValues) << "\n";
     std::cerr << "Accuracy      : " << accuracy << "\n";
   }
-  else if (std::strcmp(argv[4], "-d") == 0) {
+  else if (std::strcmp(argv[5], "-d") == 0) {
     writeAccuracy(accuracy);
   }
 }

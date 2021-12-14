@@ -12,7 +12,6 @@ using Byte = unsigned char;
 
 namespace GENERAL {
 using Curve = std::array<std::pair<double, double>, GRID_POINTS>;
-using Grid  = std::array<double, GRID_POINTS>;
 }  // namespace GENERAL
 
 namespace MNIST {
