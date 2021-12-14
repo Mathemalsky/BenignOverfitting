@@ -63,7 +63,7 @@ Data readTestLables(size_t labelcount) {
   return read(TEST_LABEL_FILE, BYTESIZE, subset);
 }
 
-void writeAccuracy(const float accuracy) {
+void writeAccuracy(const double accuracy) {
   std::ofstream file(OUTPUTFILE, std::ios_base::app);
   if (!file) {
     throw std::runtime_error((std::string) "Couldn't create file <" + OUTPUTFILE + ">.");
@@ -72,13 +72,13 @@ void writeAccuracy(const float accuracy) {
 }
 }  // namespace MNIST
 
-std::vector<float> readAccuracy(const char* filename) {
+std::vector<double> readAccuracy(const char* filename) {
   std::ifstream file(filename, std::ios::in);
   if (!file) {
     throw std::runtime_error((std::string) "File <" + filename + "> not found.");
   }
-  std::vector<float> data;
-  float number;
+  std::vector<double> data;
+  double number;
   while (file >> number) {
     data.push_back(number);
   }

@@ -11,7 +11,7 @@ namespace SIMPLE {
  * \param mu
  * \return
  */
-Samples generateSamples(const unsigned int n, const unsigned int k, const float mu);
+Samples generateSamples(const unsigned int n, const unsigned int k, const double mu);
 
 /*!
  * \brief simple

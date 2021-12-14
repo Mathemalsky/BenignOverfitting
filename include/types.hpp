@@ -11,8 +11,8 @@
 using Byte = unsigned char;
 
 namespace GENERAL {
-using Curve = std::array<std::pair<float, float>, GRID_POINTS>;
-using Grid  = std::array<float, GRID_POINTS>;
+using Curve = std::array<std::pair<double, double>, GRID_POINTS>;
+using Grid  = std::array<double, GRID_POINTS>;
 }  // namespace GENERAL
 
 namespace MNIST {
@@ -23,7 +23,7 @@ struct Data {
 
 struct Data_f {
   size_t size;
-  float* data;
+  double* data;
 };
 
 struct SampleSubset {
@@ -35,7 +35,7 @@ struct SampleSubset {
 
 namespace SIMPLE {
 
-using Points = std::vector<std::pair<float, float>>;
+using Points = std::vector<std::pair<double, double>>;
 
 /*!
  * \brief Samples struct stores all sample datas x_i, y_i, theta_j

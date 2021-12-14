@@ -25,5 +25,5 @@ namespace KERNELESTIMATE {
  * \param data
  * \param h
  */
-void plotDensity(const std::vector<float>& data, const float h);
+void plotDensity(const std::vector<double>& data, const double h);
 }  // namespace KERNELESTIMATE

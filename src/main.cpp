@@ -9,7 +9,7 @@ int main(int argc, char* argv[]) {
   }
   else if (std::strcmp(argv[1], "density") == 0) {
     const char* filename = argv[2];
-    const float h        = atof(argv[3]);
+    const double h       = atof(argv[3]);
     KERNELESTIMATE::plotDensity(readAccuracy(filename), h);
   }
   else {

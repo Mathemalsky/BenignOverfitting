@@ -15,8 +15,8 @@ inline const unsigned int DEGREE            = 3;
 }  // namespace MNIST
 
 namespace SIMPLE {
-inline const float X_MIN = -1.0f;
-inline const float X_MAX = 1.0f;
+inline const double X_MIN = -1.0f;
+inline const double X_MAX = 1.0f;
 }  // namespace SIMPLE
 
 namespace GENERAL {
@@ -24,9 +24,9 @@ inline const unsigned int GRID_POINTS = 400;
 }
 
 namespace KERNELESTIMATE {
-inline const float START        = 0.0f;
-inline const float END          = 1.0f;
-inline const float REL_BANDWITH = 9.0f;
+inline const double START        = 0.0f;
+inline const double END          = 1.0f;
+inline const double REL_BANDWITH = 9.0f;
 }  // namespace KERNELESTIMATE
 
 inline const unsigned int BYTESIZE = 1;

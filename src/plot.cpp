@@ -8,8 +8,8 @@
 
 using namespace GENERAL;
 
-static void initCurve(Curve& curve, const float x_min, const float x_max) {
-  const float stepsize = (x_max - x_min) / GRID_POINTS;
+static void initCurve(Curve& curve, const double x_min, const double x_max) {
+  const double stepsize = (x_max - x_min) / GRID_POINTS;
   for (unsigned int i = 0; i < GRID_POINTS; ++i) {
     curve[i].first  = x_min + i * stepsize;
     curve[i].second = 0.0f;
@@ -39,8 +39,8 @@ Points extractPoints(const Samples& samples) {
 
 void plotCurves(const Samples& samples, const Eigen::VectorXf& computedTheta) {
   const unsigned int n = samples.X.cols() - samples.X.rows() + 1;
-  const float x_min    = samples.X(1, 0);
-  const float x_max    = samples.X(1, n - 1);
+  const double x_min   = samples.X(1, 0);
+  const double x_max   = samples.X(1, n - 1);
 
   Curve pointsOrigTheta;
   initCurve(pointsOrigTheta, x_min, x_max);
@@ -87,20 +87,20 @@ void plotTheta(const Eigen::VectorXf& theta) {
 }  // namespace SIMPLE
 
 namespace KERNELESTIMATE {
-static float gauss(const float x, const float sigma) {
-  static const float inv_sqrt_2pi = 0.3989422804014327f;
-  const float xDivSigma           = x / sigma;
+static double gauss(const double x, const double sigma) {
+  static const double inv_sqrt_2pi = 0.3989422804014327f;
+  const double xDivSigma           = x / sigma;
   return inv_sqrt_2pi * std::exp(-0.5 * xDivSigma * xDivSigma) / sigma;
 }
 
-Curve kernelEstimate(const std::vector<float>& data, const float h) {
-  const float stepsize = (END - START) / GRID_POINTS;
-  const unsigned int n = data.size();
+Curve kernelEstimate(const std::vector<double>& data, const double h) {
+  const double stepsize = (END - START) / GRID_POINTS;
+  const unsigned int n  = data.size();
   Curve curve;
   initCurve(curve, START, END);
   for (unsigned int i = 0; i < n; ++i) {
-    const float start           = data[i] - h / 2;
-    const float end             = data[i] + h / 2;
+    const double start          = data[i] - h / 2;
+    const double end            = data[i] + h / 2;
     const int startindex        = std::ceil((start - START) / stepsize);
     const unsigned int endindex = std::floor((end - START) / stepsize);
     for (int j = startindex; j <= 0; ++j) {
@@ -116,12 +116,12 @@ Curve kernelEstimate(const std::vector<float>& data, const float h) {
     */
   }
   for (unsigned int j = 0; j < GRID_POINTS; ++j) {
-    curve[j].second /= (float) n;
+    curve[j].second /= (double) n;
   }
   return curve;
 }
 
-void plotDensity(const std::vector<float>& data, const float h) {
+void plotDensity(const std::vector<double>& data, const double h) {
   Curve curve = kernelEstimate(data, h);
   Gnuplot gp;
   gp << "set terminal png size 1400,800\n";

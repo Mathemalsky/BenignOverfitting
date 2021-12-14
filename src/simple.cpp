@@ -17,19 +17,19 @@
 #include "types.hpp"
 
 namespace SIMPLE {
-Samples generateSamples(const unsigned int n, const unsigned int k, const float mu) {
+Samples generateSamples(const unsigned int n, const unsigned int k, const double mu) {
   // allocate memory
   Eigen::MatrixXf x(k, n + k - 1);
   Eigen::VectorXf y(n + k - 1);
   Eigen::VectorXf theta(k);
-  std::vector<float> supportPoints(n);
+  std::vector<double> supportPoints(n);
 
   // set up random number generation
   unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
   std::default_random_engine prng(seed);
-  std::uniform_real_distribution<float> distribution_support(X_MIN, X_MAX);
-  std::uniform_real_distribution<float> distribution_coefficients(-5.0f, 5.0f);
-  std::normal_distribution<float> distribution_noise(0, 0.25f);
+  std::uniform_real_distribution<double> distribution_support(X_MIN, X_MAX);
+  std::uniform_real_distribution<double> distribution_coefficients(-5.0f, 5.0f);
+  std::normal_distribution<double> distribution_noise(0, 0.25f);
 
   // generate random theta
   for (unsigned int i = 0; i < k; ++i) {
