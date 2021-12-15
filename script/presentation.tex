@@ -19,6 +19,7 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{csquotes}
+\usepackage{nicematrix}
 
 % norm
 \usepackage{physics}
@@ -97,14 +98,35 @@ X^T \theta = y
 
 \begin{frame}{polynomial fitting}
 \begin{block}{regularized estimation of \(\theta\)}
-	problem: \(\min \frac{1}{2} \norm{X^T  \theta -y}^2 + \mu x^TWx\)
+	problem: \(\min \frac{1}{2} \norm{X^T  \theta -y}^2 + \frac{1}{2} \mu x^TWx\)
 	\vspace{0.5cm}
 	\pause
 	
 	\(\mu\) - weight of regularization term
 	
 	\(W\) - diagonal matrix, \(w_{ij} := \delta_{ij} i \quad i,j \in \{0,...,k-1\}\)
+	\vspace{0.5cm}
+	\pause
+	
+	\(\left(XX^T + \mu W\right) \theta = X y\) \hfill numerically unstable
 \end{block}
+\end{frame}
+	
+	
+
+\begin{frame}{polynomial fitting}
+	reformulate: \(\min \frac{1}{2} \norm{\hat{X}^T \theta -y}^2\)
+	
+	\begin{equation*}
+		\hat{X} = \begin{pNiceArray}{CCCCC|CCCC}
+			\Block{5-5}<\Huge>{X} & & & & & 0 & & ... & 0\\
+			& & & & &\sqrt{\mu} & & \Block{2-2}<\huge>{0} &\\
+			& & & & & & \sqrt{2\mu} & &\\
+			& & & & &\Block{2-2}<\huge>{0} && \ddots &\\
+			& & & & & & & & \sqrt{(k-1)\mu}
+		\end{pNiceArray}
+	\end{equation*}
+
 \end{frame}
 
 \begin{frame}{polynomial fitting examples}

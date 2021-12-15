@@ -51,6 +51,7 @@ Samples generateSamples(const unsigned int n, const unsigned int k, const double
       y(j) += x(i, j) * theta[i];
     }
   }
+  // add regularization part of the matrix
   for (unsigned int j = n; j < n + k - 1; ++j) {
     y(j) = 0;
     for (unsigned int i = 0; i < k; ++i) {
@@ -70,6 +71,8 @@ void simple(int argc, char* argv[]) {
   // solve the system of equations
   Eigen::CompleteOrthogonalDecomposition<Eigen::MatrixXd> cQR(samples.X.transpose());
   Eigen::VectorXd theta = cQR.solve(samples.Y);
+
+  std::cerr << samples.X << "\n";
 
   plotCurves(samples, theta);
   plotTheta(theta);

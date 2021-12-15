@@ -158,7 +158,7 @@ void mnist(int argc, char* argv[]) {
     for (unsigned int d = 0; d <= DEGREE; ++d) {
       for (unsigned int i = 0; i < PIXELS_PER_IMAGE; ++i) {
         const unsigned int index = d * PIXELS_PER_IMAGE + i;
-        A(index, index) += 2 * mu * d;
+        A(index, index) += mu * d;
       }
     }
     Eigen::MatrixXd theta = A.ldlt().solve(x * y);
@@ -170,7 +170,7 @@ void mnist(int argc, char* argv[]) {
   Eigen::BDCSVD<Eigen::MatrixXd> svd(sigma);        // compute just eigenvalues, no eigenvectors
   const size_t rank = svd.nonzeroSingularValues();  // svd reveals rank of matrix
   std::vector<double> eigenValues(rank);
-  auto singularValues = svd.singularValues();
+  Eigen::VectorXd singularValues = svd.singularValues();
   for (size_t i = 0; i < eigenValues.size(); ++i) {  // the eigenvalues are the squares of the singular values
     eigenValues[i] = singularValues(i) * singularValues(i);
   }
