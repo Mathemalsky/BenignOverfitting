@@ -41,7 +41,7 @@ Eigen::MatrixXd buildMatrix_Y(const size_t n, const Data labels) {
   Eigen::MatrixXd y(n, POSSIBLE_LABELS);
   for (size_t i = 0; i < n; ++i) {
     for (unsigned char j = 0; j < POSSIBLE_LABELS; ++j) {
-      y(i, j) = (j == labels.data[i]) ? 1.0f : 0.0f;
+      y(i, j) = (j == labels.data[i]) ? 1.0 : 0.0;
     }
   }
   return y;
@@ -74,7 +74,7 @@ double predict(const size_t t, const Eigen::MatrixXd theta) {
   Eigen::MatrixXd y_predict = x.transpose() * theta;
   size_t counter            = 0;
   for (size_t i = 0; i < t; ++i) {
-    if (y(maxIndex(y_predict.row(i))) == 1.0f) {
+    if (y(maxIndex(y_predict.row(i))) == 1.0) {
       ++counter;
     }
   }

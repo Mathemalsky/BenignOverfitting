@@ -10,10 +10,10 @@
 using namespace GENERAL;
 
 static void initCurve(Curve& curve, const double x_min, const double x_max) {
-  const double stepsize = (x_max - x_min) / GRID_POINTS;
+  const double stepsize = (x_max - x_min) / (GRID_POINTS - 1);
   for (unsigned int i = 0; i < GRID_POINTS; ++i) {
     curve[i].first  = x_min + i * stepsize;
-    curve[i].second = 0.0f;
+    curve[i].second = 0.0;
   }
 }
 
@@ -94,11 +94,9 @@ static double gauss(const double x, const double sigma) {
   return inv_sqrt_2pi * std::exp(-0.5 * xDivSigma * xDivSigma) / sigma;
 }
 
-Curve kernelEstimate(const std::vector<double>& data, const double h) {
+void kernelEstimate(Curve& curve, const std::vector<double>& data, const double h) {
   const double stepsize = (END - START) / GRID_POINTS;
   const unsigned int n  = data.size();
-  Curve curve;
-  initCurve(curve, START, END);
   for (unsigned int i = 0; i < n; ++i) {
     const double start          = data[i] - h / 2;
     const double end            = data[i] + h / 2;
@@ -114,14 +112,11 @@ Curve kernelEstimate(const std::vector<double>& data, const double h) {
   for (unsigned int j = 0; j < GRID_POINTS; ++j) {
     curve[j].second /= (double) n;
   }
-  return curve;
 }
 
-Curve estimateDensity(const std::vector<double>& data) {
+void estimateDensity(Curve& curve, const std::vector<double>& data) {
   const double stepsize = (END - START) / GRID_POINTS;
   const unsigned int n  = data.size();
-  Curve curve;
-  initCurve(curve, START, END);
   for (unsigned int i = 0; i < n; ++i) {
     unsigned int lowerIndex = std::floor((data[i] - START) / stepsize);
     unsigned int upperIndex = std::ceil((data[i] - START) / stepsize);
@@ -129,20 +124,29 @@ Curve estimateDensity(const std::vector<double>& data) {
     curve[lowerIndex].second += (1 - convexComb);
     curve[upperIndex].second += convexComb;
   }
-  return curve;
+  const double rescale = ((double) GRID_POINTS) / n;
+  for (unsigned int j = 0; j < GRID_POINTS; ++j) {
+    curve[j].second *= rescale;
+  }
 }
 
 void plotDensity(const std::vector<double>& data, const double h) {
-  Curve curve      = kernelEstimate(data, h);
-  // Curve curve      = estimateDensity(data);
+  Curve curve;
+  initCurve(curve, START, END);
+  if (h <= EPS) {
+    estimateDensity(curve, data);
+  }
+  else {
+    kernelEstimate(curve, data, h);
+  }
   const double mu  = mean(data);
   const double var = variance(data);
   Gnuplot gp;
   gp << "set terminal png size 1400,800\n";
   gp << "set output 'density.png'\n";
-  gp << "set yrange [0.0 : 5.0]\n";
+  gp << "set yrange [0.0 : 10.0]\n";
   gp << "set xlabel 'accuracy'\n";
-  gp << "set arrow from " << mu << ", 0 to " << mu << ", 5 nohead lc rgb \'red\'\n";
+  gp << "set arrow from " << mu << ", 0 to " << mu << ", 10 nohead lc rgb \'red\'\n";
   gp << "plot" << gp.file1d(curve) << "with lines title 'density of accuracy',\n";
   gp << "set output\n";
 
