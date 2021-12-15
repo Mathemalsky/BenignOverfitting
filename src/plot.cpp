@@ -117,16 +117,35 @@ Curve kernelEstimate(const std::vector<double>& data, const double h) {
   return curve;
 }
 
+Curve estimateDensity(const std::vector<double>& data) {
+  const double stepsize = (END - START) / GRID_POINTS;
+  const unsigned int n  = data.size();
+  Curve curve;
+  initCurve(curve, START, END);
+  for (unsigned int i = 0; i < n; ++i) {
+    unsigned int lowerIndex = std::floor((data[i] - START) / stepsize);
+    unsigned int upperIndex = std::ceil((data[i] - START) / stepsize);
+    double convexComb       = (data[i] - curve[lowerIndex].first) / stepsize;
+    curve[lowerIndex].second += (1 - convexComb);
+    curve[upperIndex].second += convexComb;
+  }
+  return curve;
+}
+
 void plotDensity(const std::vector<double>& data, const double h) {
-  Curve curve = kernelEstimate(data, h);
+  Curve curve      = kernelEstimate(data, h);
+  // Curve curve      = estimateDensity(data);
+  const double mu  = mean(data);
+  const double var = variance(data);
   Gnuplot gp;
   gp << "set terminal png size 1400,800\n";
   gp << "set output 'density.png'\n";
   gp << "set yrange [0.0 : 5.0]\n";
   gp << "set xlabel 'accuracy'\n";
+  gp << "set arrow from " << mu << ", 0 to " << mu << ", 5 nohead lc rgb \'red\'\n";
   gp << "plot" << gp.file1d(curve) << "with lines title 'density of accuracy',\n";
   gp << "set output\n";
 
-  printf("Accuracy\nmean:     %1.4f\nvariance: %1.4f\n", mean(data), variance(data));
+  printf("Accuracy\nmean:     %1.4f\nvariance: %1.4f\n", mu, var);
 }
 }  // namespace KERNELESTIMATE

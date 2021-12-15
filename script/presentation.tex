@@ -39,7 +39,7 @@
 \section{Linear algebra background}
 
 \begin{frame} {least norm solution}
-problem: \(\min \frac{1}{2} x^Tx \text{ s.t. } Ax = b\) with \(A\) ¸full row rank
+problem: \(\min \frac{1}{2} x^Tx \text{ s.t. } Ax = b\) with \(A\), full row rank
 \pause
 \begin{align*}
 	L(x,\lambda) &= \frac{1}{2} x^Tx - \lambda^T (Ax -b)\\
@@ -73,10 +73,13 @@ problem: \(\min \frac{1}{2} x^Tx \text{ s.t. } Ax = b\) with \(A\) ¸full row ra
 	\item let fitting choose optimal model subspace
 	\item prefer \enquote{sparse} solutions
 \end{itemize}
-
+\vspace{0.1cm}
+\pause
+\includegraphics[width=\textwidth]{source/BenignOverfittingModel.png}
 \end{frame}
 
-\begin{frame}{polynomial fitting}
+\subsection{Polynomial fitting}
+\begin{frame}{Polynomial fitting}
 \begin{block}{unregulated  estimation of \(\theta\)}
 given samples \((x_1, y_1), ..., (x_n, y_n)\)
 
@@ -96,9 +99,9 @@ X^T \theta = y
 \end{block}
 \end{frame}
 
-\begin{frame}{polynomial fitting}
+\begin{frame}{Polynomial fitting}
 \begin{block}{regularized estimation of \(\theta\)}
-	problem: \(\min \frac{1}{2} \norm{X^T  \theta -y}^2 + \frac{1}{2} \mu x^TWx\)
+	problem: \(\min \frac{1}{2} \norm{X^T  \theta -y}^2 + \frac{1}{2} \mu \theta^TW\theta\)
 	\vspace{0.5cm}
 	\pause
 	
@@ -111,11 +114,9 @@ X^T \theta = y
 	\(\left(XX^T + \mu W\right) \theta = X y\) \hfill numerically unstable
 \end{block}
 \end{frame}
-	
-	
 
-\begin{frame}{polynomial fitting}
-	reformulate: \(\min \frac{1}{2} \norm{\hat{X}^T \theta -y}^2\)
+\begin{frame}{Polynomial fitting}
+	reformulate as: \(\min \frac{1}{2} \norm{\hat{X}^T \theta -\hat{y}}^2\)
 	
 	\begin{equation*}
 		\hat{X} = \begin{pNiceArray}{CCCCC|CCCC}
@@ -126,42 +127,53 @@ X^T \theta = y
 			& & & & & & & & \sqrt{(k-1)\mu}
 		\end{pNiceArray}
 	\end{equation*}
+	
+	\begin{equation*}
+		\hat{y} = \begin{pmatrix}
+			y\\
+			0\\
+			\vdots\\
+			0
+		\end{pmatrix}
+	\end{equation*}
+	
+	still solvable using \(QR\) decomposition, but larger matrices
 
 \end{frame}
 
-\begin{frame}{polynomial fitting examples}
+\begin{frame}{Polynomial fitting examples}
 \begin{center}
-\includegraphics[scale=0.6]{source/theta_plot_1.png}
+\includegraphics[width=\textwidth]{source/theta_plot_1.png}
 \end{center}
 \end{frame}
 
-\begin{frame}{polynomial fitting examples}
+\begin{frame}{Polynomial fitting examples}
 \begin{center}
-\includegraphics[scale=0.6]{source/theta_coefficients_1.png}
+\includegraphics[width=\textwidth]{source/theta_coefficients_1.png}
 \end{center}
 \end{frame}
 
-\begin{frame}{polynomial fitting examples}
+\begin{frame}{Polynomial fitting examples}
 \begin{center}
-\includegraphics[scale=0.6]{source/theta_plot_2.png}
+\includegraphics[width=\textwidth]{source/theta_plot_2.png}
 \end{center}
 \end{frame}
 
-\begin{frame}{polynomial fitting examples}
+\begin{frame}{Polynomial fitting examples}
 \begin{center}
-\includegraphics[scale=0.6]{source/theta_coefficients_1.png}
+\includegraphics[width=\textwidth]{source/theta_coefficients_1.png}
 \end{center}
 \end{frame}
 
 
-\section{MNIST}
+\subsection{MNIST}
 
 \begin{frame}{MNIST}
 \begin{itemize}
 	\item very commonly used benchmark problem in machine learning
 	\item goal: recognize hand written digit from an \(28 \cdot 28\) pixel image
 	\item contains 60000 training images/ labels, 10000 test images/ labels
-	\item standard ML approches perform very well
+	\item standard ML approaches perform very well (\(> 99 \%\) accuracy)
 \end{itemize}
 \begin{center}
 	\includegraphics[scale=0.15]{source/mnist.png}
@@ -169,8 +181,9 @@ X^T \theta = y
 \end{frame}
 
 \begin{frame}{density of accuracy for unregularized optimization}
+mean: \(0.8534\) \hfill variance: \(0.0122\)
 \begin{center}
-	\includegraphics[scale=0.31]{source/density_unregularized.png}
+	\includegraphics[width=\textwidth]{source/density_unregularized.png}
 \end{center}
 \end{frame}
 
@@ -179,6 +192,7 @@ X^T \theta = y
 \begin{frame}{Sources}
 \tiny
 \begin{itemize}
+	\item Bartlett, P. L., Long, P. M., Lugosi, G., \& Tsigler, A. (2020). Benign overfitting in linear regression. Proceedings of the National Academy of Sciences, 117(48), 30063-30070.
 	\item \url{http://yann.lecun.com/exdb/mnist/} 13.09.2021 21:45
 \end{itemize}
 \end{frame}
@@ -186,7 +200,8 @@ X^T \theta = y
 \begin{frame}{Sources}
 \tiny
 \begin{itemize}
-	\item \url{https://www.researchgate.net/figure/Some-images-in-MNIST-dataset-The-whole-dataset-contains-70-000-2828-gray-scale-images_fig2_330700481} - 11.09.2021 9:58
+	\item \url{https://www.researchgate.net/figure/Some-images-in-MNIST-dataset-The-whole-dataset-contains-70-000-2828-gray-scale-images_fig2_330700481} - 11.12.2021 9:58
+	\item \url{https://www.catalyzex.com/author/Dino\%20Sejdinovic} 15.12.2021 14:28
 \end{itemize}
 \end{frame}
 \end{document}
