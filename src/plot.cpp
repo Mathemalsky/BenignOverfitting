@@ -149,13 +149,14 @@ void plotDensity(const std::vector<double>& data, const double h) {
   else {
     kernelEstimate(curve, data, h);
   }
-  double height    = getHeight(curve);
-  const double mu  = mean(data);
-  const double var = variance(data);
+  const double height = getHeight(curve);
+  const double mu     = mean(data);
+  const double var    = variance(data);
   Gnuplot gp;
   gp << "set terminal png size 1400,800\n";
   gp << "set output 'density.png'\n";
   gp << "set yrange [0.0 : " << height << "]\n";
+  gp << "set xrange [0.0 : 1.001]\n";
   gp << "set xlabel 'accuracy'\n";
   gp << "set arrow from " << mu << ", 0 to " << mu << ", " << height << " nohead lc rgb \'red\'\n";
   gp << "plot" << gp.file1d(curve) << "with lines title 'density of accuracy',\n";

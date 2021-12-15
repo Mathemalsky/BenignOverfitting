@@ -22,7 +22,7 @@ inline const double X_MAX = 1.0;
 
 namespace GENERAL {
 inline const unsigned int GRID_POINTS = 400;
-inline const double REL_PLOT_HEIGHT   = 1.14;
+inline const double REL_PLOT_HEIGHT   = 1.1;
 }  // namespace GENERAL
 
 namespace KERNELESTIMATE {
