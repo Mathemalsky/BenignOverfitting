@@ -39,6 +39,7 @@ The mnist example needs the mnist dataset, which can be downloaded [here](https:
 The extractet foler `mnist/` has be in the `bin/` directory and the files whithin it must be unpacked too.
 
 The simple polynomial regression can be invoked with:
+
 `./BeningOverfitting <n> <k> <mu>` with
 - `<n>` number of data points
 - `<k>` number of degrees of freedom
