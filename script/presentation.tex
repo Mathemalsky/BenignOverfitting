@@ -36,6 +36,117 @@
 \tableofcontents
 \end{frame}
 
+\begin{frame}{Definitions}
+\begin{center}
+\begin{block}{covariance-matrix}
+	$\Sigma = \mathbb{E}\left(\left(x - \mathbb{E}(x)\right)\left(x - \mathbb{E}(x)\right)^T\right) =  \mathbb{E}(xx^T)$
+\end{block}
+\begin{block}{Linear-Regression}
+The problem of finding a parameter vector \(\theta^\ast \in \mathbb{H}\) with 
+$\theta^\ast = arg \min\limits_\theta \mathbb{E}\left((y - x^T \theta)^2\right)$
+is called \textbf{linear regression}
+\end{block}
+\end{center}
+\end{frame}
+
+\begin{frame}{Definitions}
+\begin{center}
+\begin{block}{Excess risk}
+	$\mathbb{E}_{x,y}$ denotes the conditional expectation , then define:
+	$R:= \mathbb{E}_{x,y}[(y - x^T\theta)^2 - (y - x^T\theta^*)^2]$
+\end{block}
+\begin{block}{Effective Ranks}
+	For the covariance operator $\Sigma$, define $\lambda_i = \mu_i(\Sigma)$ for $i = 1,2,...$ . Whereby: $\mu_1(\Sigma) \geq \mu_2(\Sigma) \geq ...$ . If $\sum\limits_{i=1}^\infty \lambda_i < \infty$ and $\lambda_{k+1} > 0$
+	define: 
+	$r_k(\Sigma) = \frac{\sum_{i>k}\lambda_i}{\lambda_{k+1}} ,\hspace*{1cm}
+	R_k(\Sigma) = \frac{(\sum_{i>k}\lambda_i)^2}{R_k(\sum_{i>k})\lambda_i^2}$
+\end{block}
+\end{center}
+\end{frame}
+
+
+
+\begin{frame}{Lemma 1}
+	
+For any $\sigma_x$ there are $b,c,c_1 > 1$, for which the following holds.
+Define:
+\begin{align*}
+k^* = \min \{k \geq 0: r_k(\Sigma) \leq bn\},
+\end{align*}
+	
+Where the minimum of the empty set is defined as $\infty$. Suppose $\delta < 1$ with $\log(\frac{1}{\delta}) < n/c$. If $k^* \leq n/c_1$, then $\mathbb{E}R(\hat{\theta}) \leq \delta^2/c.$ Otherwise,\\
+	
+	
+$R(\hat{\theta}) \leq c(\norm{\theta^*}^2\norm{\Sigma}\max{\sqrt{\frac{r_0(\Sigma)}{n}},\frac{r_0(\Sigma)}{n},\sqrt{\frac{\log(1/\delta)}{n}}}) 
+$\newline \hspace*{0.85 cm}$+ c\log(\frac{1}{\delta})\sigma_y^2\left(\frac{k^*}{n} \frac{n}{R_{k^*(\Sigma)}}\right)$\\
+
+with probability at least $1 - \delta$
+
+\end{frame}
+
+
+\begin{frame}{Lemma 1}
+
+\begin{align*}
+	\mathbb{E}R(\hat{\theta}) \geq \frac{\Sigma^2}{c} \left(\frac{k^*}{n} + \frac{n}{R_{k^*(\Sigma)}}\right)
+\end{align*}
+
+
+Moreover there are universal constants $a_1.a_2,n_0$ such that $\forall n \geq n_0, \forall \Sigma, \forall t \geq 0$ there is a $\theta^*$ with $\norm{\theta^*} = t$ such that for $x \sim N(0,\Sigma)$ and $y|x \sim N(x^T\theta^*,\norm{\theta^*}^2\norm{\Sigma})$, with probability at least $1/4$,
+	
+
+\begin{align*}
+	R(\hat{\theta})\geq \frac{1}{a_1}\norm{\theta^*}^2\norm{\Sigma}\mathbbm{1}_{\left[\frac{r_0(\Sigma)}{n\log(1+r_0(\Sigma))} \geq a_2\right]}
+\end{align*}
+\end{frame}
+
+
+\begin{frame}{Lemma 2}
+
+\end{frame}
+
+
+\begin{frame}{Main results}
+\begin{center}
+	
+\end{center}
+\end{frame}
+
+
+\begin{frame}{Proof}
+\begin{center}
+\begin{block}{Lemma 3}
+	\begin{align*}
+	R(\hat{\theta)}) & \leq 2(\theta^*)^TB\theta^* + 2\epsilon^TC\epsilon & \text{ and} \\
+	\mathbb{E}_\epsilon R(\hat{\theta}) & \geq (\theta^*)^TB\theta* + \delta^2tr(C) & \text{ where}\\\\
+	B & = (I - X^T(XX^T)^{-1}X)\Sigma(I - X^T(XX^T)^{-1}X),  \\
+	C & = (XX^T)^{-1}X\Sigma X^T(XX^T)^{-1}
+	\end{align*}
+\end{block}
+\end{center}
+\end{frame}
+
+\begin{frame}{Proof}
+\end{frame}
+
+\begin{frame}{Proof}
+\end{frame}
+
+\begin{frame}{Proof}
+\end{frame}
+
+\begin{frame}{Proof}
+\end{frame}
+
+
+\begin{frame}{Conclusions}
+\begin{center}
+		
+\end{center}
+\end{frame}
+
+
+
 \section{Linear algebra background}
 
 \begin{frame} {least norm solution}
