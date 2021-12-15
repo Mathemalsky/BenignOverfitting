@@ -95,7 +95,7 @@ static double gauss(const double x, const double sigma) {
 }
 
 void kernelEstimate(Curve& curve, const std::vector<double>& data, const double h) {
-  const double stepsize = (END - START) / GRID_POINTS;
+  const double stepsize = (END - START) / (GRID_POINTS - 1);
   const unsigned int n  = data.size();
   for (unsigned int i = 0; i < n; ++i) {
     const double start          = data[i] - h / 2;
@@ -115,11 +115,11 @@ void kernelEstimate(Curve& curve, const std::vector<double>& data, const double 
 }
 
 void estimateDensity(Curve& curve, const std::vector<double>& data) {
-  const double stepsize = (END - START) / GRID_POINTS;
+  const double stepsize = (END - START) / (GRID_POINTS - 1);
   const unsigned int n  = data.size();
   for (unsigned int i = 0; i < n; ++i) {
-    unsigned int lowerIndex = std::floor((data[i] - START) / stepsize);
-    unsigned int upperIndex = std::ceil((data[i] - START) / stepsize);
+    unsigned int lowerIndex = std::max(std::floor((data[i] - START) / stepsize), 0.0);
+    unsigned int upperIndex = std::min(std::ceil((data[i] - START) / stepsize), (double) (GRID_POINTS - 1));
     double convexComb       = (data[i] - curve[lowerIndex].first) / stepsize;
     curve[lowerIndex].second += (1 - convexComb);
     curve[upperIndex].second += convexComb;
@@ -128,6 +128,16 @@ void estimateDensity(Curve& curve, const std::vector<double>& data) {
   for (unsigned int j = 0; j < GRID_POINTS; ++j) {
     curve[j].second *= rescale;
   }
+}
+
+double getHeight(const Curve& curve) {
+  double maxHeight = curve[0].second;
+  for (unsigned int i = 1; i < GRID_POINTS; ++i) {
+    if (curve[i].second > maxHeight) {
+      maxHeight = curve[i].second;
+    }
+  }
+  return maxHeight * REL_PLOT_HEIGHT;
 }
 
 void plotDensity(const std::vector<double>& data, const double h) {
@@ -139,14 +149,15 @@ void plotDensity(const std::vector<double>& data, const double h) {
   else {
     kernelEstimate(curve, data, h);
   }
+  double height    = getHeight(curve);
   const double mu  = mean(data);
   const double var = variance(data);
   Gnuplot gp;
   gp << "set terminal png size 1400,800\n";
   gp << "set output 'density.png'\n";
-  gp << "set yrange [0.0 : 10.0]\n";
+  gp << "set yrange [0.0 : " << height << "]\n";
   gp << "set xlabel 'accuracy'\n";
-  gp << "set arrow from " << mu << ", 0 to " << mu << ", 10 nohead lc rgb \'red\'\n";
+  gp << "set arrow from " << mu << ", 0 to " << mu << ", " << height << " nohead lc rgb \'red\'\n";
   gp << "plot" << gp.file1d(curve) << "with lines title 'density of accuracy',\n";
   gp << "set output\n";
 
