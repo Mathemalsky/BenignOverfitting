@@ -1,0 +1,207 @@
+\documentclass{beamer}
+%
+% Choose how your presentation looks.
+%
+% For more themes, color themes and font themes, see:
+% http://deic.uab.es/~iblanes/beamer_gallery/index_by_theme.html
+%
+\mode<presentation>
+{
+  \usetheme{JuanLesPins}      % or try Darmstadt, Madrid, Warsaw, ...
+  \usecolortheme{default} % or try albatross, beaver, crane, ...
+  \usefonttheme{default}  % or try serif, structurebold, ...
+  \setbeamertemplate{navigation symbols}{}
+  \setbeamertemplate{caption}[numbered]
+} 
+
+\usepackage[ngerman]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{csquotes}
+\usepackage{nicematrix}
+
+% norm
+\usepackage{physics}
+
+\title{Benign Overfitting}
+\date{16. December 2021}
+\author{Linus Boehm, Jurek Rostalsky}
+
+
+\begin{document}
+\maketitle
+
+\begin{frame}{Content}
+\tableofcontents
+\end{frame}
+
+\section{Linear algebra background}
+
+\begin{frame} {least norm solution}
+problem: \(\min \frac{1}{2} x^Tx \text{ s.t. } Ax = b\) with \(A\), full row rank
+\pause
+\begin{align*}
+	L(x,\lambda) &= \frac{1}{2} x^Tx - \lambda^T (Ax -b)\\
+	\nabla_x L(x,\lambda) &= x - A^T \lambda \stackrel{!}{=} 0\\
+	x & = A^T \lambda\\
+	AA^T \lambda &= b \Leftrightarrow \lambda = (AA^T)^{-1} b\\
+	x &= A^T(AA^T)^{-1} b & A^T =: QR\\
+	x &= QR(R^TQ^TQR)^{-1}b\\
+	x &= QRR^{-1} R^{-T}b\\
+	x &= QR^{-T}b
+\end{align*}
+\end{frame}
+
+\begin{frame}{least squares solution}
+\begin{block}{QR decomposition}
+\begin{align*}
+	A^TAx &= A^T b & \text{normal equation}\\
+	R^TQ^TQR^Tx &= R^TQ^Tb\\
+	R^TRx & = R^TQ^Tb\\
+	Rx &= Q^T b\\
+\end{align*}
+\end{block}
+\end{frame}
+
+\section{Benign Overfitting}
+
+\begin{frame}{Idea}
+\begin{itemize}
+	\item much more degrees of freedom than given data samples
+	\item huge model space
+	\item let fitting choose optimal model subspace
+	\item prefer \enquote{sparse} solutions
+\end{itemize}
+\vspace{0.1cm}
+\pause
+\includegraphics[width=\textwidth]{source/BenignOverfittingModel.png}
+\end{frame}
+
+\subsection{Polynomial fitting}
+\begin{frame}{Polynomial fitting}
+\begin{block}{unregulated  estimation of \(\theta\)}
+given samples \((x_1, y_1), ..., (x_n, y_n)\)
+
+		\begin{equation*}
+			X^T = \begin{pmatrix}
+			1 & x_1 & ... & x_1^{k-1}\\
+			\vdots &&& \vdots\\
+			1 & x_n & ... & x_n^{k-1}
+			\end{pmatrix} \text{Vandermondematrix}
+		\end{equation*}
+		
+compute \(\theta\) as least square solution of
+
+\begin{equation}
+X^T \theta = y
+\end{equation}
+\end{block}
+\end{frame}
+
+\begin{frame}{Polynomial fitting}
+\begin{block}{regularized estimation of \(\theta\)}
+	problem: \(\min \frac{1}{2} \norm{X^T  \theta -y}^2 + \frac{1}{2} \mu \theta^TW\theta\)
+	\vspace{0.5cm}
+	\pause
+	
+	\(\mu\) - weight of regularization term
+	
+	\(W\) - diagonal matrix, \(w_{ij} := \delta_{ij} i \quad i,j \in \{0,...,k-1\}\)
+	\vspace{0.5cm}
+	\pause
+	
+	\(\left(XX^T + \mu W\right) \theta = X y\) \hfill numerically unstable
+\end{block}
+\end{frame}
+
+\begin{frame}{Polynomial fitting}
+	reformulate as: \(\min \frac{1}{2} \norm{\hat{X}^T \theta -\hat{y}}^2\)
+	
+	\begin{equation*}
+		\hat{X} = \begin{pNiceArray}{CCCCC|CCCC}
+			\Block{5-5}<\Huge>{X} & & & & & 0 & & ... & 0\\
+			& & & & &\sqrt{\mu} & & \Block{2-2}<\huge>{0} &\\
+			& & & & & & \sqrt{2\mu} & &\\
+			& & & & &\Block{2-2}<\huge>{0} && \ddots &\\
+			& & & & & & & & \sqrt{(k-1)\mu}
+		\end{pNiceArray}
+	\end{equation*}
+	
+	\begin{equation*}
+		\hat{y} = \begin{pmatrix}
+			y\\
+			0\\
+			\vdots\\
+			0
+		\end{pmatrix}
+	\end{equation*}
+	
+	still solvable using \(QR\) decomposition, but larger matrices
+
+\end{frame}
+
+\begin{frame}{Polynomial fitting examples}
+\begin{center}
+\includegraphics[width=\textwidth]{source/theta_plot_1.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Polynomial fitting examples}
+\begin{center}
+\includegraphics[width=\textwidth]{source/theta_coefficients_1.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Polynomial fitting examples}
+\begin{center}
+\includegraphics[width=\textwidth]{source/theta_plot_2.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Polynomial fitting examples}
+\begin{center}
+\includegraphics[width=\textwidth]{source/theta_coefficients_1.png}
+\end{center}
+\end{frame}
+
+
+\subsection{MNIST}
+
+\begin{frame}{MNIST}
+\begin{itemize}
+	\item very commonly used benchmark problem in machine learning
+	\item goal: recognize hand written digit from an \(28 \cdot 28\) pixel image
+	\item contains 60000 training images/ labels, 10000 test images/ labels
+	\item standard ML approaches perform very well (\(> 99 \%\) accuracy)
+\end{itemize}
+\begin{center}
+	\includegraphics[scale=0.15]{source/mnist.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{density of accuracy for unregularized optimization}
+mean: \(0.8534\) \hfill variance: \(0.0122\)
+\begin{center}
+	\includegraphics[width=\textwidth]{source/density_unregularized.png}
+\end{center}
+\end{frame}
+
+
+\section{Sources}
+\begin{frame}{Sources}
+\tiny
+\begin{itemize}
+	\item Bartlett, P. L., Long, P. M., Lugosi, G., \& Tsigler, A. (2020). Benign overfitting in linear regression. Proceedings of the National Academy of Sciences, 117(48), 30063-30070.
+	\item \url{http://yann.lecun.com/exdb/mnist/} 13.09.2021 21:45
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Sources}
+\tiny
+\begin{itemize}
+	\item \url{https://www.researchgate.net/figure/Some-images-in-MNIST-dataset-The-whole-dataset-contains-70-000-2828-gray-scale-images_fig2_330700481} - 11.12.2021 9:58
+	\item \url{https://www.catalyzex.com/author/Dino\%20Sejdinovic} 15.12.2021 14:28
+\end{itemize}
+\end{frame}
+\end{document}

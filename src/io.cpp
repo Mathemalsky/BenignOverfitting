@@ -2,13 +2,13 @@
 
 #include <cassert>
 #include <cstring>
+#include <fstream>
 #include <iostream>
 #include <stdexcept>
 #include <string>
 
 #include "basic.hpp"
 #include "constants.hpp"
-#include "types.hpp"
 
 namespace MNIST {
 
@@ -62,4 +62,25 @@ Data readTestLables(size_t labelcount) {
   SampleSubset subset{TRAINING_SET_SIZE, labelcount, n_choose_k(TRAINING_SET_SIZE, labelcount)};
   return read(TEST_LABEL_FILE, BYTESIZE, subset);
 }
+
+void writeAccuracy(const double accuracy) {
+  std::ofstream file(OUTPUTFILE, std::ios_base::app);
+  if (!file) {
+    throw std::runtime_error((std::string) "Couldn't create file <" + OUTPUTFILE + ">.");
+  }
+  file << accuracy << "\n";
+}
 }  // namespace MNIST
+
+std::vector<double> readAccuracy(const char* filename) {
+  std::ifstream file(filename, std::ios::in);
+  if (!file) {
+    throw std::runtime_error((std::string) "File <" + filename + "> not found.");
+  }
+  std::vector<double> data;
+  double number;
+  while (file >> number) {
+    data.push_back(number);
+  }
+  return data;
+}

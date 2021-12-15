@@ -39,7 +39,20 @@ The mnist example needs the mnist dataset, which can be downloaded [here](https:
 The extractet foler `mnist/` has be in the `bin/` directory and the files whithin it must be unpacked too.
 
 The simple polynomial regression can be invoked with:
-`./BeningOverfitting <n> <k> <mu>` where `<n>` is the number of data points, `<k>` is the number of degrees of freedom and `<mu>` is weight for the regularization penalty.
 
-The mnist exaple can be invoked with:
-`./BeningOverfitting mnist <n> <t>` where `<n>` is the number of images used for training and `<t>` is the number of images used for estimating the prediction accuracy.
+`./BeningOverfitting <n> <k> <mu>` with
+- `<n>` number of data points
+- `<k>` number of degrees of freedom
+- `<mu>` weight for the regularization penalty.
+
+The mnist example can be invoked with:
+`./BeningOverfitting mnist <n> <t> <mu> [-d]` with:
+- `<n>` number of images used for training
+- `<t>` number of images used for estimating the prediction accuracy.
+- `<mu>` weight for regularization penalty
+- `-d` optional argument to suppress output and add the accuracy to a file `accuracy.dat`
+
+A plot for a estimated density of accuracy can be obtained by calling
+`./BenignOverfitting density <filename> <h>`
+- `<filename>` name of the file to be read
+- `<h>` band width that is affected by a data point
