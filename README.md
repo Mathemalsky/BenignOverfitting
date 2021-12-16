@@ -55,4 +55,4 @@ The mnist example can be invoked with:
 A plot for a estimated density of accuracy can be obtained by calling
 `./BenignOverfitting density <filename> <h>`
 - `<filename>` name of the file to be read
-- `<h>` band width that is affected by a data point
+- `<h>` band width that is affected by a data point. If `<h>` is very small, invoke a discrete method on the samples.

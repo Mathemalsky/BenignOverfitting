@@ -264,6 +264,8 @@ In cases of $\alpha \neq 1$ or $\beta \leq 1$ comes to conflicts
 
 \subsection{Linear Algebra Background}
 
+\subsection{Least norm solutions}
+
 \begin{frame} {least norm solution}
 problem: \(\min \frac{1}{2} x^Tx \text{ s.t. } Ax = b\) with \(A\), full row rank
 \pause
@@ -278,6 +280,8 @@ problem: \(\min \frac{1}{2} x^Tx \text{ s.t. } Ax = b\) with \(A\), full row ran
 	x &= QR^{-T}b
 \end{align*}
 \end{frame}
+
+\subsection{Least squares solutions}
 
 \begin{frame}{least squares solution}
 \begin{block}{QR decomposition}
@@ -313,7 +317,7 @@ given samples \((x_1, y_1), ..., (x_n, y_n)\)
 			1 & x_1 & ... & x_1^{k-1}\\
 			\vdots &&& \vdots\\
 			1 & x_n & ... & x_n^{k-1}
-			\end{pmatrix} \text{Vandermondematrix}
+			\end{pmatrix} \text{vandermonde matrix}
 		\end{equation*}
 		
 compute \(\theta\) as least square solution of
@@ -405,13 +409,22 @@ X^T \theta = y
 \end{frame}
 
 \begin{frame}{density of accuracy for unregularized optimization}
-mean: \(0.8534\) \hfill variance: \(0.0122\)
+mean: \(0.8566\) \hfill variance: \(0.0127\)
 \begin{center}
-	\includegraphics[width=\textwidth]{source/density_unregularized.png}
+	\includegraphics[width=\textwidth]{source/density.png}
 \end{center}
 \end{frame}
 
+\begin{frame}{Outlook}
+\begin{itemize}
+	\item use vandermonde matrix with mixed terms
+	\item find numerical stable way to calculate regularizations
+	\item other than polynomial mappings from samples to \(X\) matrix
+\end{itemize}
+\end{frame}
+
 \section{Sources}
+
 \begin{frame}{Sources}
 \tiny
 \begin{itemize}

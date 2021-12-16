@@ -16,18 +16,20 @@ inline const double EPS                     = 0.00001;
 }  // namespace MNIST
 
 namespace SIMPLE {
-inline const double X_MIN = -1.0f;
-inline const double X_MAX = 1.0f;
+inline const double X_MIN = -1.0;
+inline const double X_MAX = 1.0;
 }  // namespace SIMPLE
 
 namespace GENERAL {
 inline const unsigned int GRID_POINTS = 400;
-}
+inline const double REL_PLOT_HEIGHT   = 1.1;
+}  // namespace GENERAL
 
 namespace KERNELESTIMATE {
-inline const double START        = 0.0f;
-inline const double END          = 1.0f;
-inline const double REL_BANDWITH = 9.0f;
+inline const double START        = 0.0;
+inline const double END          = 1.0;
+inline const double REL_BANDWITH = 9.0;
+inline const double EPS          = 1.0 / GENERAL::GRID_POINTS;
 }  // namespace KERNELESTIMATE
 
 inline const unsigned int BYTESIZE = 1;
