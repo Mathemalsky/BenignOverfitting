@@ -39,7 +39,6 @@
 \end{frame}
 
 \section{Setting}
-\section{Benign Overfitting}
 
 \begin{frame}{Intruduction}
 \begin{itemize}
@@ -51,6 +50,7 @@
 \end{itemize}
 \end{frame}
 
+\section{Benign Overfitting - Theory}
 
 \begin{frame}{Linear Regression}
 	
@@ -178,13 +178,12 @@ $\rightarrow $ the number of non-zero eigenvalues should be large compared \hspa
 1. If $\mu_k(\Sigma) = k^{-\alpha}ln^{-\beta}(k+1), $ then $\Sigma$ is benign iff $\alpha = 1$ and $\beta > 1$\\
 
 \vspace*{0.3 cm} 2. If
-\begin{align*}
-\mu(\Sigma_n) &= 
-\begin{cases*}
-\gamma_k + \epsilon_n & if k \leq p_n \\
-0 & otherwise
-\end{cases*}
-\end{align*}
+\begin{equation*}
+	\mu(\Sigma_n) = \begin{cases}
+		\gamma_k + \epsilon_n & if \, k \leq p_n \\
+		0 & otherwise
+	\end{cases}
+\end{equation*}
 
 and $\lambda_k = \Theta(exp(-k/\tau))$, then $\Sigma_n$ is benign iff $p_n = \omega(n)$ and $ne^{o(n)} = \epsilon_np_n = o(n).$
 \end{frame}
@@ -263,7 +262,7 @@ In cases of $\alpha \neq 1$ or $\beta \leq 1$ comes to conflicts
 \end{center}
 \end{frame}
 
-
+\section{Linear algebra background}
 \begin{frame} {least norm solution}
 problem: \(\min \frac{1}{2} x^Tx \text{ s.t. } Ax = b\) with \(A\), full row rank
 \pause
@@ -299,9 +298,10 @@ problem: \(\min \frac{1}{2} x^Tx \text{ s.t. } Ax = b\) with \(A\), full row ran
 \end{itemize}
 \vspace{0.1cm}
 \pause
-\includegraphics[width=\textwidth]{BenignOverfittingModel.png}
+\includegraphics[width=\textwidth]{source/BenignOverfittingModel.png}
 \end{frame}
 
+\section{Benign Overfitting}
 \subsection{Polynomial fitting}
 \begin{frame}{Polynomial fitting}
 \begin{block}{unregulated  estimation of \(\theta\)}
@@ -367,25 +367,25 @@ X^T \theta = y
 
 \begin{frame}{Polynomial fitting examples}
 \begin{center}
-\includegraphics[width=\textwidth]{theta_plot_1.png}
+\includegraphics[width=\textwidth]{source/theta_plot_1.png}
 \end{center}
 \end{frame}
 
 \begin{frame}{Polynomial fitting examples}
 \begin{center}
-\includegraphics[width=\textwidth]{theta_coefficients_1.png}
+\includegraphics[width=\textwidth]{source/theta_coefficients_1.png}
 \end{center}
 \end{frame}
 
 \begin{frame}{Polynomial fitting examples}
 \begin{center}
-\includegraphics[width=\textwidth]{theta_plot_2.png}
+\includegraphics[width=\textwidth]{source/theta_plot_2.png}
 \end{center}
 \end{frame}
 
 \begin{frame}{Polynomial fitting examples}
 \begin{center}
-\includegraphics[width=\textwidth]{theta_coefficients_1.png}
+\includegraphics[width=\textwidth]{source/theta_coefficients_1.png}
 \end{center}
 \end{frame}
 
@@ -400,14 +400,14 @@ X^T \theta = y
 	\item standard ML approaches perform very well (\(> 99 \%\) accuracy)
 \end{itemize}
 \begin{center}
-	\includegraphics[scale=0.15]{mnist.png}
+	\includegraphics[scale=0.15]{source/mnist.png}
 \end{center}
 \end{frame}
 
 \begin{frame}{density of accuracy for unregularized optimization}
 mean: \(0.8534\) \hfill variance: \(0.0122\)
 \begin{center}
-	\includegraphics[width=\textwidth]{density_unregularized.png}
+	\includegraphics[width=\textwidth]{source/density_unregularized.png}
 \end{center}
 \end{frame}
 
